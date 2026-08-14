@@ -244,6 +244,74 @@ app.get(
 
 /*
 ========================================
+COMPANY API KEY TEST
+========================================
+*/
+
+app.get(
+  "/api/company-key-test/:companyId",
+  function (req, res) {
+    try {
+      const companyId =
+        String(
+          req.params.companyId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      const companies =
+        loadCompanies();
+
+      const company =
+        companies[companyId];
+
+      if (!company) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Company tidak ditemukan."
+        });
+      }
+
+      const envName =
+        company.api_key_env;
+
+      const apiKey =
+        process.env[envName];
+
+      if (!apiKey) {
+        return res.status(500).json({
+          success: false,
+          message:
+            "API key company belum tersedia."
+        });
+      }
+
+      return res.json({
+        success: true,
+        companyId:
+          companyId,
+        apiKeyConfigured:
+          true
+      });
+
+    } catch (error) {
+      console.error(
+        "COMPANY KEY TEST ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal memeriksa API key."
+      });
+    }
+  }
+);
+
+/*
+========================================
 HEALTH CHECK
 ========================================
 */
