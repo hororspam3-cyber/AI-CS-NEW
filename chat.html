@@ -2,7 +2,11 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>AI Customer Service</title>
 
@@ -96,6 +100,12 @@
     .input-area button:disabled {
       opacity: 0.5;
     }
+
+    .error {
+      padding: 20px;
+      color: #b91c1c;
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -105,7 +115,9 @@
 
     <div class="header">
       <h2>AI Customer Service</h2>
-      <p>● Online · Dina</p>
+      <p id="customerInfo">
+        Menghubungkan...
+      </p>
     </div>
 
     <div
@@ -113,7 +125,7 @@
       id="messages"
     >
       <div class="message ai">
-        Halo Dina, ada yang bisa saya bantu?
+        Menghubungkan ke AI Customer Service...
       </div>
     </div>
 
@@ -124,11 +136,13 @@
         type="text"
         placeholder="Tulis pesan..."
         autocomplete="off"
+        disabled
       >
 
       <button
         id="sendButton"
         onclick="sendMessage()"
+        disabled
       >
         Kirim
       </button>
@@ -138,6 +152,142 @@
   </div>
 
   <script>
+
+    /*
+    ========================================
+    LOGIN DEMO DINA
+    ========================================
+    */
+
+    async function loginDemo() {
+
+      const response =
+        await fetch(
+          "/api/login",
+          {
+            method: "POST",
+
+            credentials: "include",
+
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+
+            body: JSON.stringify({
+              customerId:
+                "USER001"
+            })
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+        throw new Error(
+          data.message ||
+          "Login gagal."
+        );
+      }
+
+      return data.customer;
+    }
+
+
+    /*
+    ========================================
+    MULAI CHAT
+    ========================================
+    */
+
+    async function startChat() {
+
+      const messages =
+        document.getElementById(
+          "messages"
+        );
+
+      const customerInfo =
+        document.getElementById(
+          "customerInfo"
+        );
+
+      try {
+
+        const customer =
+          await loginDemo();
+
+        customerInfo.textContent =
+          "● Online · " +
+          customer.name;
+
+        messages.innerHTML = "";
+
+        const welcome =
+          document.createElement(
+            "div"
+          );
+
+        welcome.className =
+          "message ai";
+
+        welcome.textContent =
+          "Halo " +
+          customer.name +
+          ", ada yang bisa saya bantu?";
+
+        messages.appendChild(
+          welcome
+        );
+
+        document.getElementById(
+          "messageInput"
+        ).disabled = false;
+
+        document.getElementById(
+          "sendButton"
+        ).disabled = false;
+
+        document.getElementById(
+          "messageInput"
+        ).focus();
+
+      } catch (error) {
+
+        customerInfo.textContent =
+          "● Offline";
+
+        messages.innerHTML = "";
+
+        const errorMessage =
+          document.createElement(
+            "div"
+          );
+
+        errorMessage.className =
+          "error";
+
+        errorMessage.textContent =
+          "Tidak dapat terhubung ke sistem.";
+
+        messages.appendChild(
+          errorMessage
+        );
+
+        console.error(error);
+      }
+    }
+
+
+    /*
+    ========================================
+    KIRIM PESAN
+    ========================================
+    */
 
     async function sendMessage() {
 
@@ -163,12 +313,6 @@
         return;
       }
 
-      /*
-      ================================
-      PESAN USER
-      ================================
-      */
-
       const userMessage =
         document.createElement(
           "div"
@@ -188,12 +332,6 @@
 
       button.disabled = true;
 
-      /*
-      ================================
-      LOADING
-      ================================
-      */
-
       const loading =
         document.createElement(
           "div"
@@ -212,12 +350,6 @@
       messages.scrollTop =
         messages.scrollHeight;
 
-      /*
-      ================================
-      AI REQUEST
-      ================================
-      */
-
       try {
 
         const response =
@@ -226,6 +358,8 @@
             {
               method: "POST",
 
+              credentials: "include",
+
               headers: {
                 "Content-Type":
                   "application/json"
@@ -233,9 +367,6 @@
 
               body:
                 JSON.stringify({
-                  customerId:
-                    "USER001",
-
                   message:
                     message
                 })
@@ -281,13 +412,13 @@
         input.focus();
 
       }
-
     }
 
+
     /*
-    ==================================
-    ENTER UNTUK MENGIRIM
-    ==================================
+    ========================================
+    ENTER
+    ========================================
     */
 
     document
@@ -306,6 +437,15 @@
 
         }
       );
+
+
+    /*
+    ========================================
+    JALANKAN
+    ========================================
+    */
+
+    startChat();
 
   </script>
 
