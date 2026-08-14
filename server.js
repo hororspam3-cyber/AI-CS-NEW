@@ -144,7 +144,77 @@ Bantu customer menyelesaikan pertanyaannya sebaik mungkin.
     });
   }
 });
+app.get("/api/test-ai", async function (req, res) {
+  try {
+    const message = String(
+      req.query.message || "Halo, siapa kamu?"
+    ).trim();
 
+    if (!GROQ_API_KEY) {
+      return res.status(500).json({
+        success: false,
+        message: "GROQ_API_KEY belum tersedia."
+      });
+    }
+
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + GROQ_API_KEY
+        },
+
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+
+          messages: [
+            {
+              role: "system",
+              content:
+                "Kamu adalah AI Customer Service profesional. Gunakan bahasa Indonesia. Jawab dengan ramah, natural, jelas, profesional, dan singkat. Jangan mengarang informasi."
+            },
+            {
+              role: "user",
+              content: message
+            }
+          ],
+
+          temperature: 0.2,
+          max_tokens: 300
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return res.status(500).json({
+        success: false,
+        message: "Groq error.",
+        error: data
+      });
+    }
+
+    const reply =
+      data.choices?.[0]?.message?.content;
+
+    return res.json({
+      success: true,
+      reply: reply
+    });
+
+  } catch (error) {
+    console.error("TEST AI ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+});
 /*
 ========================================
 SERVER
