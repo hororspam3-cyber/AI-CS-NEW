@@ -496,7 +496,9 @@ app.post(
 
       const customerId =
         req.customerSession.customerId;
-
+      const customer =
+  req.customer;
+      
       /*
       ========================================
       AMBIL DATA DARI API PERUSAHAAN
@@ -584,8 +586,8 @@ const companyResponse =
         });
       }
 
-      const customer =
-        companyData.customer;
+      const companyCustomer =
+  companyData.customer;
 
       /*
       ========================================
@@ -623,7 +625,7 @@ Kamu sedang melayani customer berikut:
 
 DATA CUSTOMER DARI API PERUSAHAAN:
 ${JSON.stringify(
-  customer,
+  companyCustomer,
   null,
   2
 )}
