@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-CS Test</title>
+</head>
+
+<body>
+
+  <h2>AI Customer Service</h2>
+
+  <input
+    id="message"
+    type="text"
+    placeholder="Tulis pertanyaan..."
+  >
+
+  <button onclick="sendMessage()">
+    Kirim
+  </button>
+
+  <p id="reply"></p>
+
+  <script>
+    async function sendMessage() {
+      const message =
+        document.getElementById("message").value;
+
+      const reply =
+        document.getElementById("reply");
+
+      reply.textContent = "AI sedang menjawab...";
+
+      try {
+        const response = await fetch(
+          "https://URL-AI-CS-NEW-KAMU.onrender.com/api/chat",
+          {
+            method: "POST",
+
+            headers: {
+              "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+              message: message
+            })
+          }
+        );
+
+        const data = await response.json();
+
+        if (data.success) {
+          reply.textContent = data.reply;
+        } else {
+          reply.textContent =
+            data.message || "Terjadi kesalahan.";
+        }
+
+      } catch (error) {
+        reply.textContent =
+          "Tidak dapat terhubung ke AI.";
+        console.error(error);
+      }
+    }
+  </script>
+
+</body>
+</html>
