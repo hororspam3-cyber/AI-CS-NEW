@@ -1,0 +1,81 @@
+{
+  "USER001": {
+    "id": "USER001",
+    "name": "Dina",
+    "company_id": "DEMO001",
+    "account_status": "Aktif",
+    "balance": 2500000,
+    "deposit": {
+      "status": "Berhasil",
+      "amount": 1000000
+    },
+    "withdrawal": {
+      "status": "Tidak ada permintaan aktif",
+      "amount": 0
+    },
+    "bonus": {
+      "status": "Tersedia",
+      "amount": 150000
+    }
+  },
+
+  "USER002": {
+    "id": "USER002",
+    "name": "Andi",
+    "company_id": "DEMO001",
+    "account_status": "Aktif",
+    "balance": 1500000,
+    "deposit": {
+      "status": "Berhasil",
+      "amount": 500000
+    },
+    "withdrawal": {
+      "status": "Sedang diproses",
+      "amount": 300000
+    },
+    "bonus": {
+      "status": "Tidak tersedia",
+      "amount": 0
+    }
+  },
+
+  "USER003": {
+    "id": "USER003",
+    "name": "Budi",
+    "company_id": "DEMO001",
+    "account_status": "Aktif",
+    "balance": 3750000,
+    "deposit": {
+      "status": "Berhasil",
+      "amount": 2000000
+    },
+    "withdrawal": {
+      "status": "Selesai",
+      "amount": 750000
+    },
+    "bonus": {
+      "status": "Tersedia",
+      "amount": 250000
+    }
+  },
+
+  "USER004": {
+    "id": "USER004",
+    "name": "Citra",
+    "company_id": "DEMO001",
+    "account_status": "Aktif",
+    "balance": 800000,
+    "deposit": {
+      "status": "Menunggu",
+      "amount": 400000
+    },
+    "withdrawal": {
+      "status": "Tidak ada permintaan aktif",
+      "amount": 0
+    },
+    "bonus": {
+      "status": "Tersedia",
+      "amount": 100000
+    }
+  }
+}
