@@ -106,6 +106,87 @@ app.get(
 
 /*
 ========================================
+DEMO LOGIN
+========================================
+*/
+
+app.post(
+  "/api/login",
+  function (req, res) {
+    try {
+      const customerId =
+        String(
+          req.body.customerId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (!customerId) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Customer ID diperlukan."
+        });
+      }
+
+      const customers =
+        loadCustomers();
+
+      const customer =
+        customers[customerId];
+
+      if (!customer) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Customer tidak ditemukan."
+        });
+      }
+
+      const token =
+        createSession(
+          customerId
+        );
+
+      res.setHeader(
+        "Set-Cookie",
+        "ai_cs_session=" +
+          token +
+          "; HttpOnly; Path=/; SameSite=Lax"
+      );
+
+      return res.json({
+        success: true,
+
+        message:
+          "Login berhasil.",
+
+        customer: {
+          id:
+            customer.id,
+
+          name:
+            customer.name
+        }
+      });
+
+    } catch (error) {
+      console.error(
+        "LOGIN ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Terjadi masalah saat login."
+      });
+    }
+  }
+);
+
+/*
+========================================
 CUSTOMER DATA TEST
 ========================================
 */
