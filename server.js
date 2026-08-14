@@ -12,6 +12,50 @@ app.use(express.static(__dirname));
 
 /*
 ========================================
+DEMO SESSION
+========================================
+*/
+
+const sessions = new Map();
+
+function createSession(customerId) {
+  const token =
+    crypto.randomBytes(32).toString("hex");
+
+  sessions.set(token, {
+    customerId: customerId,
+    createdAt: Date.now()
+  });
+
+  return token;
+}
+
+function getSession(req) {
+  const cookieHeader =
+    req.headers.cookie || "";
+
+  const cookies =
+    cookieHeader
+      .split(";")
+      .map(function (item) {
+        return item.trim();
+      });
+
+  for (const cookie of cookies) {
+    const parts = cookie.split("=");
+
+    if (parts[0] === "ai_cs_session") {
+      const token =
+        parts.slice(1).join("=");
+
+      return sessions.get(token) || null;
+    }
+  }
+
+  return null;
+}
+/*
+========================================
 CUSTOMER DATA
 ========================================
 */
