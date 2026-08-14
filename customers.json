@@ -20,9 +20,9 @@
   },
 
   "USER002": {
-    "id": "USER002",
-    "name": "Andi",
-    "company_id": "DEMO001",
+  "id": "USER002",
+  "name": "Andi",
+  "company_id": "XYZ001",
     "account_status": "Aktif",
     "balance": 1500000,
     "deposit": {
