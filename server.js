@@ -726,7 +726,95 @@ Jangan meminta password, PIN, OTP, atau kode keamanan.
   }
 );
 
+/*
+========================================
+DEMO COMPANY API
+========================================
+*/
 
+app.get(
+  "/api/company/customer/:customerId",
+  function (req, res) {
+    try {
+      const customerId =
+        String(
+          req.params.customerId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (!customerId) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Customer ID diperlukan."
+        });
+      }
+
+      const customers =
+        loadCustomers();
+
+      const customer =
+        customers[customerId];
+
+      if (!customer) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Customer tidak ditemukan."
+        });
+      }
+
+      return res.json({
+        success: true,
+
+        customer: {
+          id:
+            customer.id,
+
+          name:
+            customer.name,
+
+          company_id:
+            customer.company_id,
+
+          account_status:
+            customer.account_status,
+
+          balance:
+            customer.balance,
+
+          deposit:
+            customer.deposit,
+
+          withdrawal:
+            customer.withdrawal,
+
+          bonus:
+            customer.bonus
+        }
+      });
+
+    } catch (error) {
+      console.error(
+        "COMPANY CUSTOMER API ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal mengambil data customer."
+      });
+    }
+  }
+);
+
+/*
+========================================
+SERVER
+========================================
+*/
 app.listen(
   PORT,
   function () {
