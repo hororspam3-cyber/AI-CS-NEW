@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 app.use(express.json());
+app.use(express.static(__dirname));
 
 /*
 ========================================
