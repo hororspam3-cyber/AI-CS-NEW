@@ -178,43 +178,50 @@
 
     async function loginDemo() {
 
-      const response =
-        await fetch(
-          "/api/login",
-          {
-            method: "POST",
+  const customerSelect =
+    document.getElementById(
+      "customerSelect"
+    );
 
-            credentials: "include",
+  const customerId =
+    customerSelect.value;
 
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
+  const response =
+    await fetch(
+      "/api/login",
+      {
+        method: "POST",
 
-            body: JSON.stringify({
-              customerId:
-                "USER001"
-            })
-          }
-        );
+        credentials: "include",
 
-      const data =
-        await response.json();
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
-      if (
-        !response.ok ||
-        !data.success
-      ) {
-        throw new Error(
-          data.message ||
-          "Login gagal."
-        );
+        body: JSON.stringify({
+          customerId:
+            customerId
+        })
       }
+    );
 
-      return data.customer;
-    }
+  const data =
+    await response.json();
 
+  if (
+    !response.ok ||
+    !data.success
+  ) {
+    throw new Error(
+      data.message ||
+      "Login gagal."
+    );
+  }
 
+  return data.customer;
+}
+    
     /*
     ========================================
     MULAI CHAT
