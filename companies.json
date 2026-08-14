@@ -1,0 +1,9 @@
+{
+  "DEMO001": {
+    "id": "DEMO001",
+    "name": "Demo Company",
+    "api_url": "/api/company/customer",
+    "api_key_env": "DEMO001_API_KEY",
+    "api_enabled": true
+  }
+}
