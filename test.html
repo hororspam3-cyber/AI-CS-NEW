@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI-CS Test</title>
+  <title>AI Customer Service</title>
 </head>
 
 <body>
@@ -20,21 +20,26 @@
     Kirim
   </button>
 
-  <p id="reply"></p>
+  <pre id="reply"></pre>
 
   <script>
     async function sendMessage() {
       const message =
-        document.getElementById("message").value;
+        document.getElementById("message").value.trim();
 
       const reply =
         document.getElementById("reply");
 
-      reply.textContent = "AI sedang menjawab...";
+      if (!message) {
+        reply.textContent = "Silakan tulis pertanyaan.";
+        return;
+      }
+
+      reply.textContent = "Menghubungi AI...";
 
       try {
         const response = await fetch(
-          "https://URL-AI-CS-NEW-KAMU.onrender.com/api/chat",
+          "/api/chat",
           {
             method: "POST",
 
@@ -48,19 +53,18 @@
           }
         );
 
-        const data = await response.json();
+        const text = await response.text();
 
-        if (data.success) {
-          reply.textContent = data.reply;
-        } else {
-          reply.textContent =
-            data.message || "Terjadi kesalahan.";
-        }
+        reply.textContent =
+          "HTTP " +
+          response.status +
+          "\n\n" +
+          text;
 
       } catch (error) {
         reply.textContent =
-          "Tidak dapat terhubung ke AI.";
-        console.error(error);
+          "FETCH ERROR:\n" +
+          error.message;
       }
     }
   </script>
