@@ -47,6 +47,31 @@
       color: #d1d5db;
     }
 
+    .customer-select {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    .start-button {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: white;
+      color: #111827;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .start-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     .messages {
       flex: 1;
       padding: 20px;
@@ -114,35 +139,50 @@
   <div class="chat-container">
 
     <div class="header">
-  <h2>AI Customer Service</h2>
 
-  <select
-    id="customerSelect"
-    style="
-      margin-top: 10px;
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-    "
-  >
-    <option value="USER001">Dina - DEMO001</option>
-    <option value="USER002">Andi - XYZ001</option>
-    <option value="USER003">Budi - DEMO001</option>
-    <option value="USER004">Citra - DEMO001</option>
-  </select>
+      <h2>AI Customer Service</h2>
 
-  <p id="customerInfo">
-    Menghubungkan...
-  </p>
-</div>
+      <select
+        id="customerSelect"
+        class="customer-select"
+      >
+        <option value="USER001">
+          Dina - DEMO001
+        </option>
+
+        <option value="USER002">
+          Andi - XYZ001
+        </option>
+
+        <option value="USER003">
+          Budi - DEMO001
+        </option>
+
+        <option value="USER004">
+          Citra - DEMO001
+        </option>
+      </select>
+
+      <button
+        id="startButton"
+        class="start-button"
+        onclick="startChat()"
+      >
+        Mulai Chat
+      </button>
+
+      <p id="customerInfo">
+        Silakan pilih customer lalu tekan Mulai Chat.
+      </p>
+
+    </div>
 
     <div
       class="messages"
       id="messages"
     >
       <div class="message ai">
-        Menghubungkan ke AI Customer Service...
+        Silakan pilih customer untuk memulai chat.
       </div>
     </div>
 
@@ -168,60 +208,63 @@
 
   </div>
 
+
   <script>
 
     /*
     ========================================
-    LOGIN DEMO DINA
+    LOGIN CUSTOMER
     ========================================
     */
 
     async function loginDemo() {
 
-  const customerSelect =
-    document.getElementById(
-      "customerSelect"
-    );
+      const customerSelect =
+        document.getElementById(
+          "customerSelect"
+        );
 
-  const customerId =
-    customerSelect.value;
+      const customerId =
+        customerSelect.value;
 
-  const response =
-    await fetch(
-      "/api/login",
-      {
-        method: "POST",
+      const response =
+        await fetch(
+          "/api/login",
+          {
+            method: "POST",
 
-        credentials: "include",
+            credentials: "include",
 
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
 
-        body: JSON.stringify({
-          customerId:
-            customerId
-        })
+            body:
+              JSON.stringify({
+                customerId:
+                  customerId
+              })
+          }
+        );
+
+      const data =
+        await response.json();
+
+      if (
+        !response.ok ||
+        !data.success
+      ) {
+        throw new Error(
+          data.message ||
+          "Login gagal."
+        );
       }
-    );
 
-  const data =
-    await response.json();
+      return data.customer;
+    }
 
-  if (
-    !response.ok ||
-    !data.success
-  ) {
-    throw new Error(
-      data.message ||
-      "Login gagal."
-    );
-  }
 
-  return data.customer;
-}
-    
     /*
     ========================================
     MULAI CHAT
@@ -240,7 +283,14 @@
           "customerInfo"
         );
 
+      const startButton =
+        document.getElementById(
+          "startButton"
+        );
+
       try {
+
+        startButton.disabled = true;
 
         const customer =
           await loginDemo();
@@ -282,6 +332,8 @@
 
       } catch (error) {
 
+        startButton.disabled = false;
+
         customerInfo.textContent =
           "● Offline";
 
@@ -302,7 +354,10 @@
           errorMessage
         );
 
-        console.error(error);
+        console.error(
+          "LOGIN ERROR:",
+          error
+        );
       }
     }
 
@@ -427,7 +482,10 @@
         loading.textContent =
           "Tidak dapat terhubung ke AI.";
 
-        console.error(error);
+        console.error(
+          "CHAT ERROR:",
+          error
+        );
 
       } finally {
 
@@ -441,7 +499,7 @@
 
     /*
     ========================================
-    ENTER
+    ENTER UNTUK KIRIM
     ========================================
     */
 
@@ -461,15 +519,6 @@
 
         }
       );
-
-
-    /*
-    ========================================
-    JALANKAN
-    ========================================
-    */
-
-    startChat();
 
   </script>
 
