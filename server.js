@@ -436,6 +436,125 @@ app.get(
 SERVER
 ========================================
 */
+app.get(
+  "/api/test-dina",
+  async function (req, res) {
+    try {
+      const customers = loadCustomers();
+
+      const customer =
+        customers["USER001"];
+
+      if (!customer) {
+        return res.status(404).json({
+          success: false,
+          message: "Dina tidak ditemukan."
+        });
+      }
+
+      if (!GROQ_API_KEY) {
+        return res.status(500).json({
+          success: false,
+          message:
+            "GROQ_API_KEY belum tersedia."
+        });
+      }
+
+      const message =
+        String(
+          req.query.message ||
+          "Berapa saldo saya?"
+        ).trim();
+
+      const systemPrompt = `
+Kamu adalah AI Customer Service.
+
+Gunakan bahasa Indonesia.
+Jawab ramah, natural, jelas, profesional, dan singkat.
+
+Kamu sedang melayani customer:
+
+${JSON.stringify(customer, null, 2)}
+
+Gunakan hanya data customer tersebut.
+Jangan mengarang data.
+Jangan memberikan data customer lain.
+Jangan meminta password, PIN, OTP, atau kode keamanan.
+`;
+
+      const response = await fetch(
+        "https://api.groq.com/openai/v1/chat/completions",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            "Authorization":
+              "Bearer " +
+              GROQ_API_KEY
+          },
+
+          body: JSON.stringify({
+            model:
+              "llama-3.3-70b-versatile",
+
+            messages: [
+              {
+                role: "system",
+                content:
+                  systemPrompt
+              },
+              {
+                role: "user",
+                content:
+                  message
+              }
+            ],
+
+            temperature: 0.2,
+            max_tokens: 300
+          })
+        }
+      );
+
+      const data =
+        await response.json();
+
+      if (!response.ok) {
+        return res.status(500).json({
+          success: false,
+          message: "Groq error.",
+          error: data
+        });
+      }
+
+      const reply =
+        data.choices?.[0]?.message
+          ?.content;
+
+      return res.json({
+        success: true,
+        customerId: "USER001",
+        customerName: "Dina",
+        reply: reply
+      });
+
+    } catch (error) {
+      console.error(
+        "TEST DINA ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+  }
+);
+
 
 app.listen(
   PORT,
