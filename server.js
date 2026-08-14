@@ -43,18 +43,67 @@ function getSession(req) {
       });
 
   for (const cookie of cookies) {
-    const parts = cookie.split("=");
+    const parts =
+      cookie.split("=");
 
-    if (parts[0] === "ai_cs_session") {
+    if (
+      parts[0] ===
+      "ai_cs_session"
+    ) {
       const token =
         parts.slice(1).join("=");
 
-      return sessions.get(token) || null;
+      return (
+        sessions.get(token) ||
+        null
+      );
     }
   }
 
   return null;
 }
+
+function authenticateCustomer(
+  req,
+  res,
+  next
+) {
+  const session =
+    getSession(req);
+
+  if (!session) {
+    return res.status(401).json({
+      success: false,
+      message:
+        "Silakan login terlebih dahulu."
+    });
+  }
+
+  const customers =
+    loadCustomers();
+
+  const customer =
+    customers[
+      session.customerId
+    ];
+
+  if (!customer) {
+    return res.status(401).json({
+      success: false,
+      message:
+        "Customer tidak ditemukan."
+    });
+  }
+
+  req.customerSession =
+    session;
+
+  req.customer =
+    customer;
+
+  next();
+}
+
 /*
 ========================================
 CUSTOMER DATA
@@ -239,27 +288,13 @@ AI CHAT
 
 app.post(
   "/api/chat",
+  authenticateCustomer,
   async function (req, res) {
     try {
-      const customerId =
-        String(
-          req.body.customerId || ""
-        )
-          .trim()
-          .toUpperCase();
-
       const message =
         String(
           req.body.message || ""
         ).trim();
-
-      if (!customerId) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Customer ID diperlukan."
-        });
-      }
 
       if (!message) {
         return res.status(400).json({
@@ -277,19 +312,23 @@ app.post(
         });
       }
 
-      const customers =
-        loadCustomers();
+      /*
+      ========================================
+      CUSTOMER DARI SESSION
+      ========================================
+      */
+
+      const customerId =
+        req.customerSession.customerId;
 
       const customer =
-        customers[customerId];
+        req.customer;
 
-      if (!customer) {
-        return res.status(404).json({
-          success: false,
-          message:
-            "Customer tidak ditemukan."
-        });
-      }
+      /*
+      ========================================
+      AI INSTRUCTIONS
+      ========================================
+      */
 
       const systemPrompt = `
 Kamu adalah AI Customer Service.
@@ -344,6 +383,12 @@ gunakan data bonus.
 Jika customer bertanya tentang status akun,
 gunakan account_status.
 `;
+
+      /*
+      ========================================
+      GROQ
+      ========================================
+      */
 
       const response =
         await fetch(
