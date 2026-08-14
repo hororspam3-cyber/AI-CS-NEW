@@ -1,0 +1,31 @@
+{
+  "DEMO001": {
+    "company_name": "Demo Company",
+    "faq": [
+      {
+        "question": "Bagaimana cara melakukan deposit?",
+        "answer": "Customer dapat melakukan deposit melalui menu Deposit pada akun mereka."
+      },
+      {
+        "question": "Berapa lama proses deposit?",
+        "answer": "Status deposit dapat diperiksa melalui akun customer setelah transaksi dilakukan."
+      },
+      {
+        "question": "Bagaimana cara melakukan withdrawal?",
+        "answer": "Customer dapat mengajukan withdrawal melalui menu Withdrawal."
+      },
+      {
+        "question": "Berapa lama proses withdrawal?",
+        "answer": "Waktu proses withdrawal mengikuti ketentuan yang berlaku pada perusahaan."
+      },
+      {
+        "question": "Apakah ada bonus?",
+        "answer": "Bonus tersedia sesuai dengan program dan ketentuan perusahaan."
+      },
+      {
+        "question": "Bagaimana cara mendapatkan bonus?",
+        "answer": "Customer dapat melihat bonus yang tersedia pada akun mereka dan mengikuti ketentuan program bonus."
+      }
+    ]
+  }
+}
