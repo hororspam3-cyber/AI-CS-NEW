@@ -137,6 +137,37 @@ function loadCustomers() {
 
 /*
 ========================================
+LOAD COMPANY KNOWLEDGE
+========================================
+*/
+
+function loadCompanyKnowledge() {
+  const filePath = path.join(
+    __dirname,
+    "companyKnowledge.json"
+  );
+
+  try {
+    const data =
+      fs.readFileSync(
+        filePath,
+        "utf8"
+      );
+
+    return JSON.parse(data);
+
+  } catch (error) {
+    console.error(
+      "Gagal membaca companyKnowledge.json:",
+      error.message
+    );
+
+    return {};
+  }
+}
+
+/*
+========================================
 HEALTH CHECK
 ========================================
 */
@@ -361,6 +392,20 @@ app.post(
 
       /*
       ========================================
+      COMPANY KNOWLEDGE
+      ========================================
+      */
+
+      const knowledgeData =
+        loadCompanyKnowledge();
+
+      const companyKnowledge =
+        knowledgeData["DEMO001"] || {
+          faq: []
+        };
+      
+      /*
+      ========================================
       AI SYSTEM PROMPT
       ========================================
       */
@@ -417,6 +462,13 @@ gunakan data bonus.
 
 Jika customer bertanya tentang status akun,
 gunakan account_status.
+
+KNOWLEDGE BASE PERUSAHAAN:
+${JSON.stringify(
+  companyKnowledge,
+  null,
+  2
+)}
 `;
 
       /*
