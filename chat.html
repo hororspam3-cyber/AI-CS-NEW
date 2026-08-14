@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AI Customer Service</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
+
+    .chat-container {
+      max-width: 500px;
+      height: 100vh;
+      margin: auto;
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 20px;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .header p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      max-width: 85%;
+      padding: 12px 15px;
+      border-radius: 12px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .ai {
+      background: #f0f1f3;
+      color: #111827;
+    }
+
+    .user {
+      background: #111827;
+      color: white;
+      margin-left: auto;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 12px;
+      border-top: 1px solid #ddd;
+      gap: 8px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .input-area button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #111827;
+      color: white;
+      cursor: pointer;
+    }
+
+    .input-area button:disabled {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="chat-container">
+
+    <div class="header">
+      <h2>AI Customer Service</h2>
+      <p>● Online · Dina</p>
+    </div>
+
+    <div
+      class="messages"
+      id="messages"
+    >
+      <div class="message ai">
+        Halo Dina, ada yang bisa saya bantu?
+      </div>
+    </div>
+
+    <div class="input-area">
+
+      <input
+        id="messageInput"
+        type="text"
+        placeholder="Tulis pesan..."
+        autocomplete="off"
+      >
+
+      <button
+        id="sendButton"
+        onclick="sendMessage()"
+      >
+        Kirim
+      </button>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    async function sendMessage() {
+
+      const input =
+        document.getElementById(
+          "messageInput"
+        );
+
+      const button =
+        document.getElementById(
+          "sendButton"
+        );
+
+      const messages =
+        document.getElementById(
+          "messages"
+        );
+
+      const message =
+        input.value.trim();
+
+      if (!message) {
+        return;
+      }
+
+      /*
+      ================================
+      PESAN USER
+      ================================
+      */
+
+      const userMessage =
+        document.createElement(
+          "div"
+        );
+
+      userMessage.className =
+        "message user";
+
+      userMessage.textContent =
+        message;
+
+      messages.appendChild(
+        userMessage
+      );
+
+      input.value = "";
+
+      button.disabled = true;
+
+      /*
+      ================================
+      LOADING
+      ================================
+      */
+
+      const loading =
+        document.createElement(
+          "div"
+        );
+
+      loading.className =
+        "message ai";
+
+      loading.textContent =
+        "Sedang mengetik...";
+
+      messages.appendChild(
+        loading
+      );
+
+      messages.scrollTop =
+        messages.scrollHeight;
+
+      /*
+      ================================
+      AI REQUEST
+      ================================
+      */
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/chat",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  customerId:
+                    "USER001",
+
+                  message:
+                    message
+                })
+            }
+          );
+
+        const data =
+          await response.json();
+
+        loading.remove();
+
+        const aiMessage =
+          document.createElement(
+            "div"
+          );
+
+        aiMessage.className =
+          "message ai";
+
+        aiMessage.textContent =
+          data.reply ||
+          data.message ||
+          "AI tidak memberikan jawaban.";
+
+        messages.appendChild(
+          aiMessage
+        );
+
+        messages.scrollTop =
+          messages.scrollHeight;
+
+      } catch (error) {
+
+        loading.textContent =
+          "Tidak dapat terhubung ke AI.";
+
+        console.error(error);
+
+      } finally {
+
+        button.disabled = false;
+
+        input.focus();
+
+      }
+
+    }
+
+    /*
+    ==================================
+    ENTER UNTUK MENGIRIM
+    ==================================
+    */
+
+    document
+      .getElementById(
+        "messageInput"
+      )
+      .addEventListener(
+        "keydown",
+        function (event) {
+
+          if (
+            event.key === "Enter"
+          ) {
+            sendMessage();
+          }
+
+        }
+      );
+
+  </script>
+
+</body>
+</html>
