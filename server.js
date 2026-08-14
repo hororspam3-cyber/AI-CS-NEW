@@ -503,13 +503,66 @@ app.post(
       ========================================
       */
 
-      const companyApiUrl =
-        `${req.protocol}://${req.get("host")}/api/company/customer/${customerId}`;
+      const companyId =
+  String(
+    customer.company_id || ""
+  )
+    .trim()
+    .toUpperCase();
 
-      const companyResponse =
-        await fetch(
-          companyApiUrl
-        );
+if (!companyId) {
+  return res.status(500).json({
+    success: false,
+    message:
+      "Company ID customer tidak tersedia."
+  });
+}
+
+const companies =
+  loadCompanies();
+
+const company =
+  companies[companyId];
+
+if (!company) {
+  return res.status(404).json({
+    success: false,
+    message:
+      "Konfigurasi company tidak ditemukan."
+  });
+}
+
+const companyApiKey =
+  process.env[
+    company.api_key_env
+  ];
+
+if (!companyApiKey) {
+  return res.status(500).json({
+    success: false,
+    message:
+      "API key company belum tersedia."
+  });
+}
+
+const companyApiUrl =
+  `${req.protocol}://${req.get("host")}/api/company/customer/${customerId}`;
+
+const companyResponse =
+  await fetch(
+    companyApiUrl,
+    {
+      method: "GET",
+
+      headers: {
+        "x-company-id":
+          companyId,
+
+        "x-api-key":
+          companyApiKey
+      }
+    }
+  );
 
       const companyData =
         await companyResponse.json();
