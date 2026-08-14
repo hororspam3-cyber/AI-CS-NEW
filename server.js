@@ -168,6 +168,82 @@ function loadCompanyKnowledge() {
 
 /*
 ========================================
+COMPANY CONFIG TEST
+========================================
+*/
+
+function loadCompanies() {
+  const filePath = path.join(
+    __dirname,
+    "companies.json"
+  );
+
+  try {
+    const data =
+      fs.readFileSync(
+        filePath,
+        "utf8"
+      );
+
+    return JSON.parse(data);
+
+  } catch (error) {
+    console.error(
+      "Gagal membaca companies.json:",
+      error.message
+    );
+
+    return {};
+  }
+}
+
+app.get(
+  "/api/company/:companyId",
+  function (req, res) {
+    try {
+      const companyId =
+        String(
+          req.params.companyId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      const companies =
+        loadCompanies();
+
+      const company =
+        companies[companyId];
+
+      if (!company) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Company tidak ditemukan."
+        });
+      }
+
+      return res.json({
+        success: true,
+        company: company
+      });
+
+    } catch (error) {
+      console.error(
+        "COMPANY TEST ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal mengambil data company."
+      });
+    }
+  }
+);
+
+/*
+========================================
 HEALTH CHECK
 ========================================
 */
