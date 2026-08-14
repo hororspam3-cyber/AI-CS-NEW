@@ -969,6 +969,100 @@ app.get(
   "/api/company/customer/:customerId",
   function (req, res) {
     try {
+
+      /*
+      ========================================
+      COMPANY ID
+      ========================================
+      */
+
+      const companyId =
+        String(
+          req.headers["x-company-id"] || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (!companyId) {
+        return res.status(401).json({
+          success: false,
+          message:
+            "Company ID diperlukan."
+        });
+      }
+
+      /*
+      ========================================
+      API KEY
+      ========================================
+      */
+
+      const apiKey =
+        String(
+          req.headers["x-api-key"] || ""
+        ).trim();
+
+      if (!apiKey) {
+        return res.status(401).json({
+          success: false,
+          message:
+            "API key diperlukan."
+        });
+      }
+
+      /*
+      ========================================
+      COMPANY CONFIG
+      ========================================
+      */
+
+      const companies =
+        loadCompanies();
+
+      const company =
+        companies[companyId];
+
+      if (!company) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Company tidak ditemukan."
+        });
+      }
+
+      /*
+      ========================================
+      CHECK API KEY
+      ========================================
+      */
+
+      const expectedApiKey =
+        process.env[
+          company.api_key_env
+        ];
+
+      if (!expectedApiKey) {
+        return res.status(500).json({
+          success: false,
+          message:
+            "API key company belum dikonfigurasi."
+        });
+      }
+
+      if (apiKey !== expectedApiKey) {
+        return res.status(401).json({
+          success: false,
+          message:
+            "API key tidak valid."
+        });
+      }
+
+      /*
+      ========================================
+      CUSTOMER
+      ========================================
+      */
+
       const customerId =
         String(
           req.params.customerId || ""
@@ -997,6 +1091,33 @@ app.get(
             "Customer tidak ditemukan."
         });
       }
+
+      /*
+      ========================================
+      PASTIKAN CUSTOMER MILIK COMPANY
+      ========================================
+      */
+
+      if (
+        String(
+          customer.company_id || ""
+        )
+          .trim()
+          .toUpperCase() !==
+        companyId
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Customer bukan milik company ini."
+        });
+      }
+
+      /*
+      ========================================
+      RESPONSE
+      ========================================
+      */
 
       return res.json({
         success: true,
@@ -1029,6 +1150,7 @@ app.get(
       });
 
     } catch (error) {
+
       console.error(
         "COMPANY CUSTOMER API ERROR:",
         error
