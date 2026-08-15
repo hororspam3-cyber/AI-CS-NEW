@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    AI-CS New - Dashboard Company
+  </title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      background:
+        #f4f6f8;
+
+      color:
+        #111827;
+    }
+
+    .sidebar {
+      position: fixed;
+
+      left: 0;
+      top: 0;
+      bottom: 0;
+
+      width: 240px;
+
+      background:
+        #111827;
+
+      color: white;
+
+      padding: 25px 18px;
+    }
+
+    .logo {
+      font-size: 20px;
+
+      font-weight: bold;
+
+      margin-bottom: 35px;
+    }
+
+    .menu {
+      display: block;
+
+      padding: 12px;
+
+      margin-bottom: 8px;
+
+      border-radius: 8px;
+
+      color: #d1d5db;
+
+      text-decoration: none;
+    }
+
+    .menu.active {
+      background:
+        #374151;
+
+      color: white;
+    }
+
+    .main {
+      margin-left: 240px;
+
+      padding: 30px;
+    }
+
+    .top {
+      display: flex;
+
+      justify-content: space-between;
+
+      align-items: center;
+
+      margin-bottom: 25px;
+    }
+
+    .top h1 {
+      margin: 0;
+
+      font-size: 25px;
+    }
+
+    .company-button {
+      padding: 12px 18px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      background:
+        #111827;
+
+      color: white;
+
+      cursor: pointer;
+
+      font-size: 14px;
+    }
+
+    .cards {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 20px;
+
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: white;
+
+      padding: 22px;
+
+      border-radius: 12px;
+
+      box-shadow:
+        0 3px 12px
+        rgba(0,0,0,0.06);
+    }
+
+    .card-title {
+      color:
+        #6b7280;
+
+      font-size: 13px;
+
+      margin-bottom: 8px;
+    }
+
+    .card-value {
+      font-size: 25px;
+
+      font-weight: bold;
+    }
+
+    .section {
+      background: white;
+
+      padding: 25px;
+
+      border-radius: 12px;
+
+      box-shadow:
+        0 3px 12px
+        rgba(0,0,0,0.06);
+    }
+
+    .section h2 {
+      margin-top: 0;
+
+      font-size: 18px;
+    }
+
+    table {
+      width: 100%;
+
+      border-collapse:
+        collapse;
+    }
+
+    th,
+    td {
+      padding: 14px;
+
+      text-align: left;
+
+      border-bottom:
+        1px solid #e5e7eb;
+
+      font-size: 14px;
+    }
+
+    th {
+      color:
+        #6b7280;
+    }
+
+    .status {
+      display: inline-block;
+
+      padding: 5px 9px;
+
+      border-radius: 20px;
+
+      background:
+        #dcfce7;
+
+      color:
+        #166534;
+
+      font-size: 12px;
+    }
+
+    .empty {
+      text-align: center;
+
+      padding: 35px;
+
+      color:
+        #6b7280;
+    }
+
+    @media (max-width: 800px) {
+
+      .sidebar {
+        position: static;
+
+        width: 100%;
+
+        height: auto;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .cards {
+        grid-template-columns:
+          1fr;
+      }
+
+      .top {
+        gap: 15px;
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+      }
+
+      table {
+        min-width:
+          650px;
+      }
+
+      .section {
+        overflow-x:
+          auto;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      🤖 AI-CS New
+    </div>
+
+    <a
+      href="#"
+      class="menu active"
+    >
+      Dashboard
+    </a>
+
+    <a
+      href="#"
+      class="menu"
+    >
+      Companies
+    </a>
+
+    <a
+      href="#"
+      class="menu"
+    >
+      Widget
+    </a>
+
+    <a
+      href="#"
+      class="menu"
+    >
+      API
+    </a>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+
+    <!-- HEADER -->
+
+    <div class="top">
+
+      <div>
+
+        <h1>
+          Dashboard Company
+        </h1>
+
+        <p>
+          Kelola perusahaan yang menggunakan AI Customer Service.
+        </p>
+
+      </div>
+
+      <button
+        class="company-button"
+        type="button"
+        onclick="addCompany()"
+      >
+        + Tambah Company
+      </button>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="cards">
+
+      <div class="card">
+
+        <div class="card-title">
+          Total Company
+        </div>
+
+        <div
+          class="card-value"
+          id="totalCompany"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          Company Aktif
+        </div>
+
+        <div
+          class="card-value"
+          id="activeCompany"
+        >
+          0
+        </div>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-title">
+          Widget Aktif
+        </div>
+
+        <div
+          class="card-value"
+          id="activeWidget"
+        >
+          0
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- COMPANY TABLE -->
+
+    <div class="section">
+
+      <h2>
+        Daftar Company
+      </h2>
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Company ID
+            </th>
+
+            <th>
+              Nama
+            </th>
+
+            <th>
+              API URL
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Widget
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody
+          id="companyTable"
+        >
+
+          <tr>
+
+            <td
+              colspan="5"
+              class="empty"
+            >
+              Belum ada data company.
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+  </main>
+
+
+  <script>
+
+    /*
+    ========================================
+    DEMO DASHBOARD
+    ========================================
+    */
+
+    function addCompany() {
+
+      alert(
+        "Form Tambah Company akan kita buat pada tahap berikutnya."
+      );
+
+    }
+
+
+    /*
+    ========================================
+    DATA DEMO
+    ========================================
+    */
+
+    const demoCompanies = [
+
+      {
+        id:
+          "CLIENT001",
+
+        name:
+          "Client Demo",
+
+        apiUrl:
+          "/api/client-demo/customer",
+
+        status:
+          "Aktif",
+
+        widget:
+          "Aktif"
+      }
+
+    ];
+
+
+    /*
+    ========================================
+    TAMPILKAN COMPANY
+    ========================================
+    */
+
+    function renderCompanies() {
+
+      const table =
+        document.getElementById(
+          "companyTable"
+        );
+
+      const total =
+        document.getElementById(
+          "totalCompany"
+        );
+
+      const active =
+        document.getElementById(
+          "activeCompany"
+        );
+
+      const widget =
+        document.getElementById(
+          "activeWidget"
+        );
+
+
+      total.textContent =
+        demoCompanies.length;
+
+
+      active.textContent =
+        demoCompanies.filter(
+          function(company) {
+
+            return (
+              company.status ===
+              "Aktif"
+            );
+
+          }
+        ).length;
+
+
+      widget.textContent =
+        demoCompanies.filter(
+          function(company) {
+
+            return (
+              company.widget ===
+              "Aktif"
+            );
+
+          }
+        ).length;
+
+
+      table.innerHTML = "";
+
+
+      demoCompanies.forEach(
+        function(company) {
+
+          const row =
+            document.createElement(
+              "tr"
+            );
+
+
+          row.innerHTML = `
+
+            <td>
+              ${company.id}
+            </td>
+
+            <td>
+              ${company.name}
+            </td>
+
+            <td>
+              ${company.apiUrl}
+            </td>
+
+            <td>
+              <span class="status">
+                ${company.status}
+              </span>
+            </td>
+
+            <td>
+              <span class="status">
+                ${company.widget}
+              </span>
+            </td>
+
+          `;
+
+
+          table.appendChild(
+            row
+          );
+
+        }
+      );
+
+    }
+
+
+    /*
+    ========================================
+    START
+    ========================================
+    */
+
+    renderCompanies();
+
+  </script>
+
+
+</body>
+
+</html>
