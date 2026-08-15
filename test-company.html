@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Test Company - TEST001
+  </title>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      background:
+        #f4f6f8;
+
+      color:
+        #111827;
+    }
+
+    .header {
+      background:
+        #111827;
+
+      color: white;
+
+      padding: 18px 25px;
+    }
+
+    .header h1 {
+      margin: 0;
+
+      font-size: 22px;
+    }
+
+    .header p {
+      margin: 5px 0 0;
+
+      color:
+        #d1d5db;
+
+      font-size: 13px;
+    }
+
+    .container {
+      max-width: 900px;
+
+      margin: 40px auto;
+
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+
+      padding: 30px;
+
+      border-radius: 15px;
+
+      box-shadow:
+        0 4px 15px
+        rgba(0,0,0,0.08);
+    }
+
+    .customer {
+      display: flex;
+
+      align-items: center;
+
+      gap: 15px;
+
+      padding: 18px;
+
+      background:
+        #f9fafb;
+
+      border-radius: 10px;
+
+      margin-bottom: 25px;
+    }
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background:
+        #111827;
+
+      color: white;
+
+      font-size: 20px;
+    }
+
+    .customer-info strong {
+      display: block;
+
+      font-size: 17px;
+    }
+
+    .customer-info span {
+      display: block;
+
+      margin-top: 4px;
+
+      color:
+        #6b7280;
+
+      font-size: 13px;
+    }
+
+    .status {
+      display: inline-block;
+
+      margin-top: 5px;
+
+      padding: 4px 8px;
+
+      border-radius: 20px;
+
+      background:
+        #dcfce7;
+
+      color:
+        #166534;
+
+      font-size: 12px;
+    }
+
+    .info {
+      line-height: 1.7;
+
+      color:
+        #4b5563;
+    }
+
+    .info strong {
+      color:
+        #111827;
+    }
+
+    .chat-info {
+      margin-top: 25px;
+
+      padding: 15px;
+
+      border-left:
+        4px solid #111827;
+
+      background:
+        #f9fafb;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <h1>
+      🏢 Test Company
+    </h1>
+
+    <p>
+      Company ID: TEST001
+    </p>
+
+  </header>
+
+
+  <!-- CONTENT -->
+
+  <main class="container">
+
+    <div class="card">
+
+      <h2>
+        Customer Demo
+      </h2>
+
+
+      <!-- CUSTOMER -->
+
+      <div class="customer">
+
+        <div class="avatar">
+          B
+        </div>
+
+        <div class="customer-info">
+
+          <strong>
+            Budi
+          </strong>
+
+          <span>
+            Customer ID: TESTCUSTOMER001
+          </span>
+
+          <span class="status">
+            ● Login berhasil
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- INFO -->
+
+      <div class="info">
+
+        <p>
+          Selamat datang di
+          <strong>
+            Test Company
+          </strong>.
+        </p>
+
+        <p>
+          Anda sedang login sebagai
+          <strong>
+            Budi
+          </strong>.
+        </p>
+
+        <p>
+          Customer ID:
+          <strong>
+            TESTCUSTOMER001
+          </strong>
+        </p>
+
+        <p>
+          Company ID:
+          <strong>
+            TEST001
+          </strong>
+        </p>
+
+      </div>
+
+
+      <!-- CHAT INFO -->
+
+      <div class="chat-info">
+
+        💬
+        <strong>
+          Live Chat AI-CS New
+        </strong>
+
+        <p>
+          Gunakan tombol chat di pojok
+          kanan bawah untuk menghubungi
+          AI Customer Service.
+        </p>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- CUSTOMER ID -->
+
+  <script>
+
+    window.currentCustomer = {
+      id:
+        "TESTCUSTOMER001"
+    };
+
+  </script>
+
+
+  <!-- AI-CS NEW WIDGET -->
+
+  <script
+    src="https://ai-cs-new.onrender.com/widget.js"
+    data-company-id="TEST001"
+  ></script>
+
+
+</body>
+
+</html>
