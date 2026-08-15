@@ -8,39 +8,88 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Client Demo - Test AI-CS</title>
+  <title>Client Demo</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6f8;
+
+      font-family:
+        Arial,
+        sans-serif;
+
+      background:
+        #f4f6f8;
     }
 
     .container {
-      max-width: 700px;
+      max-width: 600px;
+
       margin: 60px auto;
+
       padding: 30px;
+
       background: white;
+
       border-radius: 15px;
+
       box-shadow:
-        0 5px 20px rgba(0,0,0,0.08);
+        0 5px 20px
+        rgba(0,0,0,0.08);
     }
 
     h1 {
       margin-top: 0;
     }
 
-    p {
-      color: #555;
-      line-height: 1.6;
+    .login-box {
+      padding: 20px;
+
+      background: #f0f1f3;
+
+      border-radius: 10px;
+
+      margin-top: 20px;
     }
 
-    .customer {
+    button {
+      margin-top: 15px;
+
+      padding: 12px 20px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      background: #111827;
+
+      color: white;
+
+      cursor: pointer;
+
+      font-size: 15px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .status {
       margin-top: 20px;
+
       padding: 15px;
-      background: #f0f1f3;
-      border-radius: 10px;
+
+      border-radius: 8px;
+
+      background: #dcfce7;
+
+      color: #166534;
+
+      display: none;
     }
   </style>
 </head>
@@ -49,50 +98,156 @@
 
   <div class="container">
 
-    <h1>Client Demo</h1>
+    <h1>
+      Client Demo
+    </h1>
 
     <p>
-      Ini adalah website demo perusahaan.
+      Demo website perusahaan CLIENT001.
     </p>
 
-    <p>
-      Customer sedang login sebagai Rina.
-      AI Customer Service dipasang sebagai widget
-      di website perusahaan.
-    </p>
+    <div class="login-box">
 
-    <div class="customer">
+      <strong>
+        Customer Demo
+      </strong>
 
-      <strong>Customer:</strong> Rina<br>
+      <p>
+        Customer:
+        Rina
+      </p>
 
-      <strong>Customer ID:</strong>
-      CUSTOMER001
+      <p>
+        Customer ID:
+        CUSTOMER001
+      </p>
 
+      <button
+        type="button"
+        onclick="loginAsRina()"
+      >
+        Login sebagai Rina
+      </button>
+
+    </div>
+
+    <div
+      id="status"
+      class="status"
+    >
+      Login berhasil.
+      Live Chat AI-CS siap digunakan.
     </div>
 
   </div>
 
 
-  <!--
-  ========================================
-  AI-CS NEW WIDGET
-  ========================================
-  -->
-
   <script>
-  /*
-  CUSTOMER YANG SEDANG LOGIN
-  */
-  window.currentCustomer = {
-    id: "CUSTOMER001",
-    name: "Rina"
-  };
-</script>
 
-<script
-  src="https://ai-cs-new.onrender.com/widget.js"
-  data-company-id="CLIENT001"
-></script>
-  
+    /*
+    ========================================
+    SIMULASI LOGIN CUSTOMER
+    ========================================
+    */
+
+    function loginAsRina() {
+
+      /*
+      ----------------------------------------
+      SISTEM LOGIN PERUSAHAAN
+      ----------------------------------------
+      */
+
+      window.currentCustomer = {
+        id:
+          "CUSTOMER001",
+
+        name:
+          "Rina"
+      };
+
+
+      /*
+      ----------------------------------------
+      STATUS LOGIN
+      ----------------------------------------
+      */
+
+      const status =
+        document.getElementById(
+          "status"
+        );
+
+      status.style.display =
+        "block";
+
+
+      /*
+      ----------------------------------------
+      SIMPAN KE SESSION STORAGE
+      ----------------------------------------
+      */
+
+      sessionStorage.setItem(
+        "customerId",
+        "CUSTOMER001"
+      );
+
+      sessionStorage.setItem(
+        "customerName",
+        "Rina"
+      );
+
+
+      /*
+      ----------------------------------------
+      INFO CONSOLE
+      ----------------------------------------
+      */
+
+      console.log(
+        "Customer login:",
+        window.currentCustomer
+      );
+
+
+      /*
+      ----------------------------------------
+      LOAD WIDGET
+      ----------------------------------------
+      */
+
+      if (
+        document.getElementById(
+          "aics-widget-script"
+        )
+      ) {
+        return;
+      }
+
+
+      const script =
+        document.createElement(
+          "script"
+        );
+
+      script.id =
+        "aics-widget-script";
+
+      script.src =
+        "https://ai-cs-new.onrender.com/widget.js";
+
+      script.dataset.companyId =
+        "CLIENT001";
+
+
+      document.body.appendChild(
+        script
+      );
+
+    }
+
+  </script>
+
 </body>
 </html>
