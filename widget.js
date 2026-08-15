@@ -528,9 +528,9 @@
       */
 
       const response =
-        await fetch(
-          AI_CS_URL +
-          "/api/widget/chat",
+  await fetch(
+    AI_CS_URL +
+    "/api/chat",
           {
             method: "POST",
 
