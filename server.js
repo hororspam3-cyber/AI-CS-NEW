@@ -1773,6 +1773,341 @@ app.get(
 
 /*
 ========================================
+GET ALL COMPANIES
+========================================
+*/
+
+app.get(
+  "/api/companies",
+  function (req, res) {
+    try {
+
+      const companies =
+        loadCompanies();
+
+      const list =
+        Object.values(companies);
+
+      return res.json({
+        success: true,
+        companies: list
+      });
+
+    } catch (error) {
+
+      console.error(
+        "GET COMPANIES ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal mengambil data company."
+      });
+
+    }
+  }
+);
+
+
+/*
+========================================
+GET COMPANY KNOWLEDGE
+========================================
+*/
+
+app.get(
+  "/api/knowledge/:companyId",
+  function (req, res) {
+    try {
+
+      const companyId =
+        String(
+          req.params.companyId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Company ID diperlukan."
+        });
+      }
+
+
+      /*
+      ========================================
+      CEK COMPANY
+      ========================================
+      */
+
+      const companies =
+        loadCompanies();
+
+      const company =
+        companies[companyId];
+
+      if (!company) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Company tidak ditemukan."
+        });
+      }
+
+
+      /*
+      ========================================
+      LOAD KNOWLEDGE
+      ========================================
+      */
+
+      const knowledgeData =
+        loadCompanyKnowledge();
+
+      const knowledge =
+        knowledgeData[companyId] || {
+          faq: "",
+          deposit: "",
+          withdrawal: "",
+          bonus: "",
+          other: ""
+        };
+
+
+      return res.json({
+        success: true,
+
+        companyId:
+          companyId,
+
+        knowledge:
+          knowledge
+      });
+
+    } catch (error) {
+
+      console.error(
+        "GET KNOWLEDGE ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal mengambil knowledge."
+      });
+
+    }
+  }
+);
+
+
+/*
+========================================
+SAVE COMPANY KNOWLEDGE
+========================================
+*/
+
+app.put(
+  "/api/knowledge/:companyId",
+  function (req, res) {
+    try {
+
+      const companyId =
+        String(
+          req.params.companyId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Company ID diperlukan."
+        });
+      }
+
+
+      /*
+      ========================================
+      CEK COMPANY
+      ========================================
+      */
+
+      const companies =
+        loadCompanies();
+
+      const company =
+        companies[companyId];
+
+      if (!company) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Company tidak ditemukan."
+        });
+      }
+
+
+      /*
+      ========================================
+      DATA KNOWLEDGE
+      ========================================
+      */
+
+      const knowledge = {
+
+        faq:
+          String(
+            req.body.faq || ""
+          ).trim(),
+
+        deposit:
+          String(
+            req.body.deposit || ""
+          ).trim(),
+
+        withdrawal:
+          String(
+            req.body.withdrawal || ""
+          ).trim(),
+
+        bonus:
+          String(
+            req.body.bonus || ""
+          ).trim(),
+
+        other:
+          String(
+            req.body.other || ""
+          ).trim()
+
+      };
+
+
+      /*
+      ========================================
+      LOAD FILE
+      ========================================
+      */
+
+      const filePath =
+        path.join(
+          __dirname,
+          "companyKnowledge.json"
+        );
+
+
+      let knowledgeData = {};
+
+
+      try {
+
+        if (
+          fs.existsSync(filePath)
+        ) {
+
+          const data =
+            fs.readFileSync(
+              filePath,
+              "utf8"
+            );
+
+          if (data.trim()) {
+
+            knowledgeData =
+              JSON.parse(data);
+
+          }
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "READ KNOWLEDGE FILE ERROR:",
+          error.message
+        );
+
+        knowledgeData = {};
+
+      }
+
+
+      /*
+      ========================================
+      SIMPAN COMPANY
+      ========================================
+      */
+
+      knowledgeData[companyId] =
+        knowledge;
+
+
+      /*
+      ========================================
+      TULIS FILE
+      ========================================
+      */
+
+      fs.writeFileSync(
+        filePath,
+
+        JSON.stringify(
+          knowledgeData,
+          null,
+          2
+        ),
+
+        "utf8"
+      );
+
+
+      /*
+      ========================================
+      RESPONSE
+      ========================================
+      */
+
+      return res.json({
+
+        success: true,
+
+        message:
+          "Knowledge berhasil disimpan.",
+
+        companyId:
+          companyId,
+
+        knowledge:
+          knowledge
+
+      });
+
+    } catch (error) {
+
+      console.error(
+        "SAVE KNOWLEDGE ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal menyimpan knowledge."
+      });
+
+    }
+  }
+);
+
+/*
+========================================
 SERVER
 ========================================
 */
