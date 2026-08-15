@@ -684,8 +684,54 @@ if (!companyApiKey) {
   });
 }
 
-const companyApiUrl =
-  `${req.protocol}://${req.get("host")}/api/company/customer/${customerId}`;
+/*
+========================================
+AMBIL DATA CUSTOMER DARI COMPANY API
+========================================
+*/
+
+let companyApiUrl =
+  String(
+    company.api_url || ""
+  ).trim();
+
+if (!companyApiUrl) {
+  return res.status(500).json({
+    success: false,
+    message:
+      "API URL company belum tersedia."
+  });
+}
+
+/*
+========================================
+JIKA API URL RELATIF
+========================================
+*/
+
+if (
+  companyApiUrl.startsWith("/")
+) {
+  companyApiUrl =
+    `${req.protocol}://${req.get("host")}${companyApiUrl}`;
+}
+
+/*
+========================================
+TAMBAHKAN CUSTOMER ID
+========================================
+*/
+
+companyApiUrl =
+  companyApiUrl.replace(/\/+$/, "") +
+  "/" +
+  encodeURIComponent(customerId);
+
+/*
+========================================
+PANGGIL COMPANY API
+========================================
+*/
 
 const companyResponse =
   await fetch(
@@ -703,42 +749,42 @@ const companyResponse =
     }
   );
 
-      const companyData =
-        await companyResponse.json();
+const companyData =
+  await companyResponse.json();
 
-      if (
-        !companyResponse.ok ||
-        !companyData.success ||
-        !companyData.customer
-      ) {
-        console.error(
-          "COMPANY API ERROR:",
-          companyData
-        );
+if (
+  !companyResponse.ok ||
+  !companyData.success ||
+  !companyData.customer
+) {
+  console.error(
+    "COMPANY API ERROR:",
+    companyData
+  );
 
-        return res.status(500).json({
-          success: false,
-          message:
-            "Data customer dari perusahaan tidak dapat diambil."
-        });
-      }
+  return res.status(500).json({
+    success: false,
+    message:
+      "Data customer dari perusahaan tidak dapat diambil."
+  });
+}
 
-      const companyCustomer =
+const companyCustomer =
   companyData.customer;
 
-      /*
-      ========================================
-      COMPANY KNOWLEDGE
-      ========================================
-      */
+/*
+=======================================
+COMPANY KNOWLEDGE
+========================================
+*/
 
-      const knowledgeData =
-        loadCompanyKnowledge();
+const knowledgeData =
+  loadCompanyKnowledge();
 
-      const companyKnowledge =
-        knowledgeData["DEMO001"] || {
-          faq: []
-        };
+const companyKnowledge =
+  knowledgeData[companyId] || {
+    faq: []
+  };
       
       /*
       ========================================
