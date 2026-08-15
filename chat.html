@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>AI Customer Service</title>
 
@@ -62,6 +61,7 @@ content="width=device-width, initial-scale=1.0"
       border-radius: 12px;
       line-height: 1.5;
       font-size: 14px;
+      word-wrap: break-word;
     }
 
     .ai {
@@ -88,6 +88,7 @@ content="width=device-width, initial-scale=1.0"
       border: 1px solid #ccc;
       border-radius: 8px;
       outline: none;
+      font-size: 14px;
     }
 
     .input-area button {
@@ -101,12 +102,17 @@ content="width=device-width, initial-scale=1.0"
 
     .input-area button:disabled {
       opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .error {
       padding: 20px;
       color: #b91c1c;
       text-align: center;
+    }
+
+    .loading {
+      opacity: 0.7;
     }
   </style>
 
@@ -116,56 +122,65 @@ content="width=device-width, initial-scale=1.0"
 
   <div class="chat-container">
 
-```
-<div class="header">
+    <div class="header">
 
-  <h2>
-    AI Customer Service
-  </h2>
+      <h2>
+        AI Customer Service
+      </h2>
 
-  <p id="customerInfo">
-    Menghubungkan...
-  </p>
+      <p id="customerInfo">
+        Menghubungkan...
+      </p>
 
-</div>
-
-
-<div
-  class="messages"
-  id="messages"
->
-
-  <div class="message ai">
-    Menghubungkan ke AI Customer Service...
-  </div>
-
-</div>
+    </div>
 
 
-<div class="input-area">
+    <div
+      class="messages"
+      id="messages"
+    >
 
-  <input
-    id="messageInput"
-    type="text"
-    placeholder="Tulis pesan..."
-    autocomplete="off"
-    disabled
-  >
+      <div class="message ai">
+        Menghubungkan ke AI Customer Service...
+      </div>
 
-  <button
-    id="sendButton"
-    onclick="sendMessage()"
-    disabled
-  >
-    Kirim
-  </button>
+    </div>
 
-</div>
-```
+
+    <div class="input-area">
+
+      <input
+        id="messageInput"
+        type="text"
+        placeholder="Tulis pesan..."
+        autocomplete="off"
+        disabled
+      >
+
+      <button
+        id="sendButton"
+        type="button"
+        disabled
+      >
+        Kirim
+      </button>
+
+    </div>
 
   </div>
+
 
   <script>
+
+    /*
+    ========================================
+    KONFIGURASI
+    ========================================
+    */
+
+    const AI_CS_URL =
+      "https://ai-cs-new.onrender.com";
+
 
     /*
     ========================================
@@ -213,16 +228,81 @@ content="width=device-width, initial-scale=1.0"
 
     /*
     ========================================
-    LOGIN CUSTOMER OTOMATIS
+    ELEMENT
+    ========================================
+    */
+
+    const messages =
+      document.getElementById(
+        "messages"
+      );
+
+    const customerInfo =
+      document.getElementById(
+        "customerInfo"
+      );
+
+    const input =
+      document.getElementById(
+        "messageInput"
+      );
+
+    const sendButton =
+      document.getElementById(
+        "sendButton"
+      );
+
+
+    /*
+    ========================================
+    TAMBAH PESAN
+    ========================================
+    */
+
+    function addMessage(
+      text,
+      type
+    ) {
+
+      const message =
+        document.createElement(
+          "div"
+        );
+
+      message.className =
+        "message " +
+        (
+          type === "user"
+            ? "user"
+            : "ai"
+        );
+
+      message.textContent =
+        String(text || "");
+
+      messages.appendChild(
+        message
+      );
+
+      messages.scrollTop =
+        messages.scrollHeight;
+
+      return message;
+    }
+
+
+    /*
+    ========================================
+    LOGIN CUSTOMER
     ========================================
     */
 
     async function loginCustomer() {
 
-      const urlCustomer =
+      const customerData =
         getCustomerFromUrl();
 
-      if (!urlCustomer) {
+      if (!customerData) {
 
         throw new Error(
           "Company ID atau Customer ID tidak ditemukan di URL."
@@ -233,6 +313,7 @@ content="width=device-width, initial-scale=1.0"
 
       const response =
         await fetch(
+          AI_CS_URL +
           "/api/login",
           {
             method: "POST",
@@ -246,15 +327,29 @@ content="width=device-width, initial-scale=1.0"
 
             body:
               JSON.stringify({
+
                 customerId:
-                  urlCustomer.customerId
+                  customerData.customerId
+
               })
           }
         );
 
 
-      const data =
-        await response.json();
+      let data;
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch (error) {
+
+        throw new Error(
+          "Response login dari server tidak valid."
+        );
+
+      }
 
 
       if (
@@ -275,42 +370,21 @@ content="width=device-width, initial-scale=1.0"
           data.customer,
 
         companyId:
-          urlCustomer.companyId,
+          customerData.companyId,
 
         customerId:
-          urlCustomer.customerId
+          customerData.customerId
       };
     }
 
 
     /*
     ========================================
-    MULAI OTOMATIS
+    START CHAT
     ========================================
     */
 
     async function startChat() {
-
-      const messages =
-        document.getElementById(
-          "messages"
-        );
-
-      const customerInfo =
-        document.getElementById(
-          "customerInfo"
-        );
-
-      const input =
-        document.getElementById(
-          "messageInput"
-        );
-
-      const sendButton =
-        document.getElementById(
-          "sendButton"
-        );
-
 
       try {
 
@@ -330,31 +404,36 @@ content="width=device-width, initial-scale=1.0"
         messages.innerHTML = "";
 
 
-        const welcome =
-          document.createElement(
-            "div"
-          );
-
-        welcome.className =
-          "message ai";
-
-
-        welcome.textContent =
+        addMessage(
           "Halo " +
           customer.name +
-          ", ada yang bisa saya bantu?";
-
-
-        messages.appendChild(
-          welcome
+          ", ada yang bisa saya bantu?",
+          "ai"
         );
 
 
-        input.disabled = false;
+        input.disabled =
+          false;
 
-        sendButton.disabled = false;
+        sendButton.disabled =
+          false;
 
         input.focus();
+
+
+        console.log(
+          "AI-CS CUSTOMER:",
+          {
+            companyId:
+              result.companyId,
+
+            customerId:
+              result.customerId,
+
+            customerName:
+              customer.name
+          }
+        );
 
 
       } catch (error) {
@@ -366,23 +445,10 @@ content="width=device-width, initial-scale=1.0"
         messages.innerHTML = "";
 
 
-        const errorMessage =
-          document.createElement(
-            "div"
-          );
-
-
-        errorMessage.className =
-          "error";
-
-
-        errorMessage.textContent =
+        addMessage(
           error.message ||
-          "Tidak dapat terhubung ke sistem.";
-
-
-        messages.appendChild(
-          errorMessage
+          "Tidak dapat terhubung ke sistem.",
+          "ai"
         );
 
 
@@ -403,22 +469,6 @@ content="width=device-width, initial-scale=1.0"
 
     async function sendMessage() {
 
-      const input =
-        document.getElementById(
-          "messageInput"
-        );
-
-      const button =
-        document.getElementById(
-          "sendButton"
-        );
-
-      const messages =
-        document.getElementById(
-          "messages"
-        );
-
-
       const message =
         input.value.trim();
 
@@ -428,57 +478,65 @@ content="width=device-width, initial-scale=1.0"
       }
 
 
-      const userMessage =
-        document.createElement(
-          "div"
-        );
+      /*
+      ========================================
+      CUSTOMER MESSAGE
+      ========================================
+      */
 
-
-      userMessage.className =
-        "message user";
-
-
-      userMessage.textContent =
-        message;
-
-
-      messages.appendChild(
-        userMessage
+      addMessage(
+        message,
+        "user"
       );
 
 
       input.value = "";
 
-      button.disabled = true;
+      sendButton.disabled =
+        true;
 
+
+      /*
+      ========================================
+      LOADING
+      ========================================
+      */
 
       const loading =
-        document.createElement(
-          "div"
+        addMessage(
+          "Sedang mengetik...",
+          "ai"
         );
 
-
-      loading.className =
-        "message ai";
-
-
-      loading.textContent =
-        "Sedang mengetik...";
-
-
-      messages.appendChild(
-        loading
+      loading.classList.add(
+        "loading"
       );
-
-
-      messages.scrollTop =
-        messages.scrollHeight;
 
 
       try {
 
+        const customerData =
+          getCustomerFromUrl();
+
+
+        if (!customerData) {
+
+          throw new Error(
+            "Data customer tidak ditemukan di URL."
+          );
+
+        }
+
+
+        /*
+        ========================================
+        KIRIM KE AI-CS
+        ========================================
+        */
+
         const response =
           await fetch(
+            AI_CS_URL +
             "/api/chat",
             {
               method: "POST",
@@ -492,59 +550,105 @@ content="width=device-width, initial-scale=1.0"
 
               body:
                 JSON.stringify({
+
+                  companyId:
+                    customerData.companyId,
+
+                  customerId:
+                    customerData.customerId,
+
                   message:
                     message
+
                 })
             }
           );
 
 
-        const data =
-          await response.json();
+        /*
+        ========================================
+        RESPONSE
+        ========================================
+        */
+
+        let data;
+
+        try {
+
+          data =
+            await response.json();
+
+        } catch (error) {
+
+          throw new Error(
+            "Response server tidak valid."
+          );
+
+        }
 
 
         loading.remove();
 
 
-        const aiMessage =
-          document.createElement(
-            "div"
+        /*
+        ========================================
+        ERROR
+        ========================================
+        */
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          addMessage(
+            data.message ||
+            "AI tidak dapat memproses pesan.",
+            "ai"
           );
 
+          return;
+        }
 
-        aiMessage.className =
-          "message ai";
 
+        /*
+        ========================================
+        JAWABAN AI
+        ========================================
+        */
 
-        aiMessage.textContent =
+        addMessage(
           data.reply ||
-          data.message ||
-          "AI tidak memberikan jawaban.";
-
-
-        messages.appendChild(
-          aiMessage
+          "AI tidak memberikan jawaban.",
+          "ai"
         );
 
 
-        messages.scrollTop =
-          messages.scrollHeight;
-
-
       } catch (error) {
-
-        loading.textContent =
-          "Tidak dapat terhubung ke AI.";
-
 
         console.error(
           "CHAT ERROR:",
           error
         );
 
+
+        loading.classList.remove(
+          "loading"
+        );
+
+
+        loading.textContent =
+          error.message ||
+          "Tidak dapat terhubung ke AI Customer Service.";
+
+
+        customerInfo.textContent =
+          "● Connection error";
+
       } finally {
 
-        button.disabled = false;
+        sendButton.disabled =
+          false;
 
         input.focus();
 
@@ -554,33 +658,43 @@ content="width=device-width, initial-scale=1.0"
 
     /*
     ========================================
-    ENTER UNTUK KIRIM
+    TOMBOL KIRIM
     ========================================
     */
 
-    document
-      .getElementById(
-        "messageInput"
-      )
-      .addEventListener(
-        "keydown",
-        function(event) {
-
-          if (
-            event.key === "Enter"
-          ) {
-
-            sendMessage();
-
-          }
-
-        }
-      );
+    sendButton.addEventListener(
+      "click",
+      sendMessage
+    );
 
 
     /*
     ========================================
-    AUTO START
+    ENTER
+    ========================================
+    */
+
+    input.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          sendMessage();
+
+        }
+
+      }
+    );
+
+
+    /*
+    ========================================
+    MULAI
     ========================================
     */
 
@@ -589,4 +703,5 @@ content="width=device-width, initial-scale=1.0"
   </script>
 
 </body>
+
 </html>
