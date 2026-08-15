@@ -197,6 +197,143 @@ function loadCompanies() {
   }
 }
 
+/*
+========================================
+REGISTER COMPANY
+========================================
+*/
+
+app.post(
+  "/api/admin/company",
+  function (req, res) {
+    try {
+
+      const companyId =
+        String(
+          req.body.companyId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      const companyName =
+        String(
+          req.body.companyName || ""
+        ).trim();
+
+      const apiUrl =
+        String(
+          req.body.apiUrl || ""
+        ).trim();
+
+      const apiKeyEnv =
+        String(
+          req.body.apiKeyEnv || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Company ID diperlukan."
+        });
+      }
+
+      if (!companyName) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Nama perusahaan diperlukan."
+        });
+      }
+
+      if (!apiUrl) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "API URL diperlukan."
+        });
+      }
+
+      if (!apiKeyEnv) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "API Key Environment diperlukan."
+        });
+      }
+
+      const companies =
+        loadCompanies();
+
+      if (companies[companyId]) {
+        return res.status(409).json({
+          success: false,
+          message:
+            "Company ID sudah terdaftar."
+        });
+      }
+
+      companies[companyId] = {
+        id:
+          companyId,
+
+        name:
+          companyName,
+
+        api_url:
+          apiUrl,
+
+        api_key_env:
+          apiKeyEnv,
+
+        api_enabled:
+          true
+      };
+
+      const filePath =
+        path.join(
+          __dirname,
+          "companies.json"
+        );
+
+      fs.writeFileSync(
+        filePath,
+        JSON.stringify(
+          companies,
+          null,
+          2
+        ),
+        "utf8"
+      );
+
+      return res.status(201).json({
+        success: true,
+
+        message:
+          "Company berhasil didaftarkan.",
+
+        company:
+          companies[companyId]
+      });
+
+    } catch (error) {
+
+      console.error(
+        "REGISTER COMPANY ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal mendaftarkan company."
+      });
+    }
+  }
+);
+
 app.get(
   "/api/company/:companyId",
   function (req, res) {
