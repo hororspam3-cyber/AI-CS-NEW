@@ -20,11 +20,11 @@
       .toUpperCase();
 
   const customerId =
-  String(
-    window.currentCustomer?.id || ""
-  )
-    .trim()
-    .toUpperCase();
+    String(
+      window.currentCustomer?.id || ""
+    )
+      .trim()
+      .toUpperCase();
 
   /*
   ========================================
@@ -41,7 +41,7 @@
 
   if (!customerId) {
     console.error(
-      "AI-CS: data-customer-id wajib diisi."
+      "AI-CS: Customer ID tidak ditemukan."
     );
     return;
   }
@@ -60,55 +60,36 @@
       position: fixed;
       right: 20px;
       bottom: 20px;
-
       width: 60px;
       height: 60px;
-
       border: none;
       border-radius: 50%;
-
       background: #111827;
       color: white;
-
       font-size: 25px;
-
       cursor: pointer;
-
       z-index: 999999;
-
-      box-shadow:
-        0 4px 15px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
     }
 
     #aics-window {
       display: none;
-
       position: fixed;
-
       right: 20px;
       bottom: 90px;
-
       width: 360px;
       height: 500px;
-
       background: white;
-
       border-radius: 15px;
-
-      box-shadow:
-        0 5px 25px rgba(0,0,0,0.25);
-
+      box-shadow: 0 5px 25px rgba(0,0,0,0.25);
       overflow: hidden;
-
       z-index: 999999;
-
       font-family: Arial, sans-serif;
     }
 
     #aics-header {
       background: #111827;
       color: white;
-
       padding: 15px;
     }
 
@@ -125,40 +106,27 @@
 
     #aics-close {
       float: right;
-
       border: none;
       background: transparent;
-
       color: white;
-
       font-size: 20px;
-
       cursor: pointer;
     }
 
     #aics-messages {
       height: 390px;
-
       padding: 15px;
-
       overflow-y: auto;
-
       background: #f4f6f8;
     }
 
     .aics-message {
       max-width: 82%;
-
       padding: 10px 12px;
-
       margin-bottom: 10px;
-
       border-radius: 10px;
-
       font-size: 14px;
-
       line-height: 1.4;
-
       word-wrap: break-word;
     }
 
@@ -170,49 +138,33 @@
     .aics-user {
       background: #111827;
       color: white;
-
       margin-left: auto;
     }
 
     #aics-input-area {
       display: flex;
-
       gap: 6px;
-
       padding: 10px;
-
       border-top: 1px solid #ddd;
-
       background: white;
     }
 
     #aics-input {
       flex: 1;
-
       min-width: 0;
-
       padding: 10px;
-
       border: 1px solid #ccc;
-
       border-radius: 8px;
-
       outline: none;
-
       font-size: 14px;
     }
 
     #aics-send {
       border: none;
-
       padding: 10px 14px;
-
       border-radius: 8px;
-
       background: #111827;
-
       color: white;
-
       cursor: pointer;
     }
 
@@ -221,21 +173,16 @@
     }
 
     @media (max-width: 500px) {
-
       #aics-window {
         right: 10px;
         bottom: 80px;
-
         width: calc(100% - 20px);
-
         height: 70vh;
-
         max-height: 600px;
       }
 
       #aics-messages {
         height: calc(70vh - 110px);
-
         max-height: 490px;
       }
     }
@@ -253,9 +200,7 @@
     document.createElement("button");
 
   button.id = "aics-button";
-
   button.type = "button";
-
   button.textContent = "💬";
 
   button.setAttribute(
@@ -299,7 +244,7 @@
     <div id="aics-messages">
 
       <div class="aics-message aics-ai">
-        Halo Rina, ada yang bisa saya bantu?
+        Halo, ada yang bisa saya bantu?
       </div>
 
     </div>
@@ -512,6 +457,41 @@
 
         return;
       }
+
+      /*
+      ========================================
+      NAMA CUSTOMER DINAMIS
+      ========================================
+      */
+
+      const customerName =
+        String(
+          data.customerName || ""
+        ).trim();
+
+      /*
+      ========================================
+      PESAN PEMBUKA
+      ========================================
+      */
+
+      if (
+        customerName &&
+        messages.children.length === 0
+      ) {
+
+        addMessage(
+          `Halo ${customerName}, ada yang bisa saya bantu?`,
+          "ai"
+        );
+
+      }
+
+      /*
+      ========================================
+      JAWABAN AI
+      ========================================
+      */
 
       addMessage(
         data.reply ||
