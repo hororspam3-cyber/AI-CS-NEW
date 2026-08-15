@@ -101,13 +101,6 @@
       white-space: pre-wrap;
     }
 
-    .company {
-      padding: 12px;
-      border: 1px solid #e5e7eb;
-      border-radius: 8px;
-      margin-top: 10px;
-    }
-
     .online {
       color: #15803d;
       font-weight: bold;
@@ -129,6 +122,10 @@
       <p>Dashboard Perusahaan</p>
     </div>
 
+
+    <!-- ========================================
+         TAMBAH PERUSAHAAN
+         ======================================== -->
 
     <div class="card">
 
@@ -196,9 +193,13 @@
     </div>
 
 
+    <!-- ========================================
+         TEST COMPANY
+         ======================================== -->
+
     <div class="card">
 
-      <h2>Test Company</h2>
+      <h2>Test Connection</h2>
 
       <input
         id="testCompanyId"
@@ -206,11 +207,20 @@
         placeholder="Contoh: DEMO001"
       >
 
+
       <button
         onclick="testCompany()"
       >
         Cek Perusahaan
       </button>
+
+
+      <button
+        onclick="testConnection()"
+      >
+        Test Connection
+      </button>
+
 
       <div
         id="testResult"
@@ -225,6 +235,12 @@
 
 
   <script>
+
+    /*
+    ========================================
+    REGISTER COMPANY
+    ========================================
+    */
 
     async function registerCompany() {
 
@@ -355,6 +371,12 @@
     }
 
 
+    /*
+    ========================================
+    CEK COMPANY
+    ========================================
+    */
+
     async function testCompany() {
 
       const companyId =
@@ -434,7 +456,93 @@
 
     }
 
+
+    /*
+    ========================================
+    TEST CONNECTION
+    ========================================
+    */
+
+    async function testConnection() {
+
+      const companyId =
+        document.getElementById(
+          "testCompanyId"
+        ).value.trim();
+
+
+      const result =
+        document.getElementById(
+          "testResult"
+        );
+
+
+      if (!companyId) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          'Masukkan Company ID.' +
+          '</span>';
+
+        return;
+      }
+
+
+      result.textContent =
+        "Memeriksa API key company...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/company-key-test/" +
+            encodeURIComponent(
+              companyId
+            )
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Connection gagal."
+          );
+
+        }
+
+
+        result.innerHTML =
+          '<span class="online">' +
+          '✓ Connection berhasil.' +
+          '</span>\n\n' +
+          'Company ID: ' +
+          data.companyId +
+          '\n' +
+          'API Key: Tersedia';
+
+
+      } catch (error) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          '✗ Connection gagal: ' +
+          error.message +
+          '</span>';
+
+      }
+
+    }
+
   </script>
 
 </body>
-  </html>
+</html>
