@@ -141,7 +141,6 @@
         placeholder="Contoh: ABC001"
       >
 
-
       <label>
         Nama Perusahaan
       </label>
@@ -151,7 +150,6 @@
         type="text"
         placeholder="Contoh: ABC Company"
       >
-
 
       <label>
         API URL
@@ -163,7 +161,6 @@
         placeholder="https://api.perusahaan.com/customer"
       >
 
-
       <label>
         API Key Environment
       </label>
@@ -174,14 +171,12 @@
         placeholder="ABC001_API_KEY"
       >
 
-
       <button
         id="registerButton"
         onclick="registerCompany()"
       >
         Tambah Perusahaan
       </button>
-
 
       <div
         id="result"
@@ -201,12 +196,15 @@
 
       <h2>Test Connection</h2>
 
+      <label>
+        Company ID
+      </label>
+
       <input
         id="testCompanyId"
         type="text"
         placeholder="Contoh: DEMO001"
       >
-
 
       <button
         onclick="testCompany()"
@@ -214,13 +212,27 @@
         Cek Perusahaan
       </button>
 
-
       <button
         onclick="testConnection()"
       >
         Test Connection
       </button>
 
+      <label>
+        Customer ID
+      </label>
+
+      <input
+        id="testCustomerId"
+        type="text"
+        placeholder="Contoh: USER001"
+      >
+
+      <button
+        onclick="testCustomerApi()"
+      >
+        Test Customer API
+      </button>
 
       <div
         id="testResult"
@@ -384,12 +396,10 @@
           "testCompanyId"
         ).value.trim();
 
-
       const result =
         document.getElementById(
           "testResult"
         );
-
 
       if (!companyId) {
 
@@ -401,10 +411,8 @@
         return;
       }
 
-
       result.textContent =
         "Memeriksa perusahaan...";
-
 
       try {
 
@@ -416,10 +424,8 @@
             )
           );
 
-
         const data =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -433,7 +439,6 @@
 
         }
 
-
         result.innerHTML =
           '<span class="online">' +
           '✓ Company ditemukan.' +
@@ -443,7 +448,6 @@
             null,
             2
           );
-
 
       } catch (error) {
 
@@ -470,12 +474,10 @@
           "testCompanyId"
         ).value.trim();
 
-
       const result =
         document.getElementById(
           "testResult"
         );
-
 
       if (!companyId) {
 
@@ -487,10 +489,8 @@
         return;
       }
 
-
       result.textContent =
         "Memeriksa API key company...";
-
 
       try {
 
@@ -502,10 +502,8 @@
             )
           );
 
-
         const data =
           await response.json();
-
 
         if (
           !response.ok ||
@@ -519,7 +517,6 @@
 
         }
 
-
         result.innerHTML =
           '<span class="online">' +
           '✓ Connection berhasil.' +
@@ -528,7 +525,6 @@
           data.companyId +
           '\n' +
           'API Key: Tersedia';
-
 
       } catch (error) {
 
@@ -542,7 +538,105 @@
 
     }
 
+
+    /*
+    ========================================
+    TEST CUSTOMER API
+    ========================================
+    */
+
+    async function testCustomerApi() {
+
+      const companyId =
+        document.getElementById(
+          "testCompanyId"
+        ).value.trim();
+
+      const customerId =
+        document.getElementById(
+          "testCustomerId"
+        ).value.trim();
+
+      const result =
+        document.getElementById(
+          "testResult"
+        );
+
+      if (!companyId) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          'Masukkan Company ID.' +
+          '</span>';
+
+        return;
+      }
+
+      if (!customerId) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          'Masukkan Customer ID.' +
+          '</span>';
+
+        return;
+      }
+
+      result.textContent =
+        "Mengambil data customer...";
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/admin/test-customer/" +
+            encodeURIComponent(
+              companyId
+            ) +
+            "/" +
+            encodeURIComponent(
+              customerId
+            )
+          );
+
+        const data =
+          await response.json();
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Customer API gagal."
+          );
+
+        }
+
+        result.innerHTML =
+          '<span class="online">' +
+          '✓ Customer API berhasil.' +
+          '</span>\n\n' +
+          JSON.stringify(
+            data.customer,
+            null,
+            2
+          );
+
+      } catch (error) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          '✗ Customer API gagal: ' +
+          error.message +
+          '</span>';
+
+      }
+
+    }
+
   </script>
 
 </body>
-</html>
+  </html>
