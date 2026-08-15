@@ -18,7 +18,7 @@
   "CLIENT001": {
   "id": "CLIENT001",
   "name": "Client Demo",
-  "api_url": "/api/company/customer",
+  "api_url": "/api/client-demo/customer",
   "api_key_env": "CLIENT001_API_KEY",
   "api_enabled": true
 }
