@@ -1103,18 +1103,44 @@ Jawaban harus terlihat seperti customer service manusia, bukan seperti output AI
       ========================================
       */
 
-      const reply =
-        data.choices?.[0]?.message
-          ?.content;
+      let reply =
+  data.choices?.[0]?.message
+    ?.content;
 
 
-      if (!reply) {
-        return res.status(500).json({
-          success: false,
-          message:
-            "AI tidak memberikan jawaban."
-        });
-      }
+if (!reply) {
+  return res.status(500).json({
+    success: false,
+    message:
+      "AI tidak memberikan jawaban."
+  });
+}
+
+
+/*
+========================================
+RAPIKAN FORMAT JAWABAN AI
+========================================
+*/
+
+// Rapikan spasi berlebihan
+reply = reply.trim();
+
+// Pisahkan nomor langkah agar selalu
+// berada di baris baru
+reply = reply.replace(
+  /\s*(\d+)\.\s+/g,
+  "\n$1. "
+);
+
+// Rapikan baris kosong berlebihan
+reply = reply.replace(
+  /\n{3,}/g,
+  "\n\n"
+);
+
+// Hapus newline di awal
+reply = reply.trim();
 
 
       /*
