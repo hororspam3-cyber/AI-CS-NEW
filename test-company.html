@@ -78,6 +78,112 @@
         rgba(0,0,0,0.08);
     }
 
+    .login-card {
+      max-width: 450px;
+
+      margin:
+        60px auto;
+    }
+
+    .login-card h2 {
+      margin-top: 0;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      font-size: 14px;
+
+      font-weight: bold;
+    }
+
+    .form-group input {
+      width: 100%;
+
+      padding: 12px;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius: 8px;
+
+      font-size: 14px;
+
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color:
+        #111827;
+    }
+
+    .login-button {
+      width: 100%;
+
+      padding: 12px;
+
+      border: none;
+
+      border-radius: 8px;
+
+      background:
+        #111827;
+
+      color: white;
+
+      font-size: 14px;
+
+      cursor: pointer;
+    }
+
+    .login-button:disabled {
+      opacity: 0.6;
+
+      cursor: not-allowed;
+    }
+
+    .error {
+      display: none;
+
+      margin-top: 15px;
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      background:
+        #fee2e2;
+
+      color:
+        #991b1b;
+
+      font-size: 13px;
+    }
+
+    .success {
+      display: none;
+
+      margin-top: 15px;
+
+      padding: 10px;
+
+      border-radius: 8px;
+
+      background:
+        #dcfce7;
+
+      color:
+        #166534;
+
+      font-size: 13px;
+    }
+
     .customer {
       display: flex;
 
@@ -173,6 +279,10 @@
         #f9fafb;
     }
 
+    #companyPage {
+      display: none;
+    }
+
   </style>
 
 </head>
@@ -196,9 +306,72 @@
   </header>
 
 
-  <!-- CONTENT -->
+  <!-- LOGIN -->
 
-  <main class="container">
+  <main
+    id="loginPage"
+    class="container"
+  >
+
+    <div class="card login-card">
+
+      <h2>
+        Login Customer
+      </h2>
+
+      <p>
+        Silakan login untuk menggunakan
+        Live Chat AI Customer Service.
+      </p>
+
+
+      <div class="form-group">
+
+        <label for="customerId">
+          Customer ID
+        </label>
+
+        <input
+          id="customerId"
+          type="text"
+          placeholder="Contoh: TESTCUSTOMER001"
+          autocomplete="off"
+        >
+
+      </div>
+
+
+      <button
+        id="loginButton"
+        class="login-button"
+        type="button"
+      >
+        Login
+      </button>
+
+
+      <div
+        id="loginError"
+        class="error"
+      ></div>
+
+
+      <div
+        id="loginSuccess"
+        class="success"
+      ></div>
+
+    </div>
+
+  </main>
+
+
+  <!-- COMPANY PAGE -->
+
+  <main
+    id="companyPage"
+    class="container"
+  >
 
     <div class="card">
 
@@ -206,8 +379,6 @@
         Customer Demo
       </h2>
 
-
-      <!-- CUSTOMER -->
 
       <div class="customer">
 
@@ -217,12 +388,15 @@
 
         <div class="customer-info">
 
-          <strong>
+          <strong id="customerName">
             Budi
           </strong>
 
           <span>
-            Customer ID: TESTCUSTOMER001
+            Customer ID:
+            <span id="customerIdDisplay">
+              TESTCUSTOMER001
+            </span>
           </span>
 
           <span class="status">
@@ -233,8 +407,6 @@
 
       </div>
 
-
-      <!-- INFO -->
 
       <div class="info">
 
@@ -247,14 +419,14 @@
 
         <p>
           Anda sedang login sebagai
-          <strong>
+          <strong id="welcomeName">
             Budi
           </strong>.
         </p>
 
         <p>
           Customer ID:
-          <strong>
+          <strong id="customerIdInfo">
             TESTCUSTOMER001
           </strong>
         </p>
@@ -269,8 +441,6 @@
       </div>
 
 
-      <!-- CHAT INFO -->
-
       <div class="chat-info">
 
         💬
@@ -279,9 +449,10 @@
         </strong>
 
         <p>
-          Gunakan tombol chat di pojok
-          kanan bawah untuk menghubungi
-          AI Customer Service.
+          Login berhasil.
+          Sekarang gunakan tombol chat
+          di pojok kanan bawah untuk
+          menghubungi AI Customer Service.
         </p>
 
       </div>
@@ -291,24 +462,323 @@
   </main>
 
 
-  <!-- CUSTOMER ID -->
-
   <script>
 
-    window.currentCustomer = {
-      id:
-        "TESTCUSTOMER001"
-    };
+    /*
+    ========================================
+    TEST COMPANY
+    ========================================
+    */
+
+    const COMPANY_ID =
+      "TEST001";
+
+
+    /*
+    ========================================
+    ELEMENT
+    ========================================
+    */
+
+    const loginPage =
+      document.getElementById(
+        "loginPage"
+      );
+
+    const companyPage =
+      document.getElementById(
+        "companyPage"
+      );
+
+    const customerIdInput =
+      document.getElementById(
+        "customerId"
+      );
+
+    const loginButton =
+      document.getElementById(
+        "loginButton"
+      );
+
+    const loginError =
+      document.getElementById(
+        "loginError"
+      );
+
+    const loginSuccess =
+      document.getElementById(
+        "loginSuccess"
+      );
+
+
+    /*
+    ========================================
+    LOGIN
+    ========================================
+    */
+
+    async function loginCustomer() {
+
+      const customerId =
+        customerIdInput.value
+          .trim()
+          .toUpperCase();
+
+
+      loginError.style.display =
+        "none";
+
+      loginSuccess.style.display =
+        "none";
+
+
+      if (!customerId) {
+
+        loginError.textContent =
+          "Customer ID wajib diisi.";
+
+        loginError.style.display =
+          "block";
+
+        return;
+      }
+
+
+      loginButton.disabled =
+        true;
+
+      loginButton.textContent =
+        "Memeriksa...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/customer/" +
+            encodeURIComponent(
+              customerId
+            )
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success ||
+          !data.customer
+        ) {
+
+          loginError.textContent =
+            data.message ||
+            "Customer tidak ditemukan.";
+
+          loginError.style.display =
+            "block";
+
+          return;
+        }
+
+
+        const customer =
+          data.customer;
+
+
+        /*
+        ========================================
+        PASTIKAN CUSTOMER MILIK TEST001
+        ========================================
+        */
+
+        if (
+          String(
+            customer.company_id || ""
+          )
+            .trim()
+            .toUpperCase() !==
+          COMPANY_ID
+        ) {
+
+          loginError.textContent =
+            "Customer bukan milik Test Company.";
+
+          loginError.style.display =
+            "block";
+
+          return;
+        }
+
+
+        /*
+        ========================================
+        LOGIN BERHASIL
+        ========================================
+        */
+
+        window.currentCustomer = {
+          id:
+            customer.id
+        };
+
+
+        document.getElementById(
+          "customerName"
+        ).textContent =
+          customer.name;
+
+
+        document.getElementById(
+          "welcomeName"
+        ).textContent =
+          customer.name;
+
+
+        document.getElementById(
+          "customerIdDisplay"
+        ).textContent =
+          customer.id;
+
+
+        document.getElementById(
+          "customerIdInfo"
+        ).textContent =
+          customer.id;
+
+
+        loginSuccess.textContent =
+          "Login berhasil sebagai " +
+          customer.name +
+          ".";
+
+        loginSuccess.style.display =
+          "block";
+
+
+        /*
+        ========================================
+        TAMPILKAN COMPANY
+        ========================================
+        */
+
+        loginPage.style.display =
+          "none";
+
+        companyPage.style.display =
+          "block";
+
+
+        /*
+        ========================================
+        LOAD AI-CS WIDGET
+        ========================================
+        */
+
+        loadAIWidget(
+          customer.id
+        );
+
+      } catch (error) {
+
+        console.error(
+          "LOGIN ERROR:",
+          error
+        );
+
+        loginError.textContent =
+          "Tidak dapat terhubung ke server.";
+
+        loginError.style.display =
+          "block";
+
+      } finally {
+
+        loginButton.disabled =
+          false;
+
+        loginButton.textContent =
+          "Login";
+
+      }
+
+    }
+
+
+    /*
+    ========================================
+    LOAD WIDGET
+    ========================================
+    */
+
+    function loadAIWidget(
+      customerId
+    ) {
+
+      window.currentCustomer = {
+        id:
+          customerId
+      };
+
+
+      const script =
+        document.createElement(
+          "script"
+        );
+
+
+      script.src =
+        "https://ai-cs-new.onrender.com/widget.js";
+
+
+      script.dataset.companyId =
+        COMPANY_ID;
+
+
+      document.body.appendChild(
+        script
+      );
+
+    }
+
+
+    /*
+    ========================================
+    BUTTON LOGIN
+    ========================================
+    */
+
+    loginButton.addEventListener(
+      "click",
+      loginCustomer
+    );
+
+
+    /*
+    ========================================
+    ENTER
+    ========================================
+    */
+
+    customerIdInput.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          loginCustomer();
+
+        }
+
+      }
+    );
 
   </script>
-
-
-  <!-- AI-CS NEW WIDGET -->
-
-  <script
-    src="https://ai-cs-new.onrender.com/widget.js"
-    data-company-id="TEST001"
-  ></script>
 
 
 </body>
