@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>AI-CS New - Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #111827;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .header p {
+      margin: 6px 0 0;
+      color: #d1d5db;
+      font-size: 14px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    label {
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 13px;
+      border: none;
+      border-radius: 8px;
+      background: #111827;
+      color: white;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 8px;
+      background: #f3f4f6;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    .company {
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .online {
+      color: #15803d;
+      font-weight: bold;
+    }
+
+    .error {
+      color: #b91c1c;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="header">
+      <h1>AI-CS New</h1>
+      <p>Dashboard Perusahaan</p>
+    </div>
+
+
+    <div class="card">
+
+      <h2>Tambah Perusahaan</h2>
+
+      <label>
+        Company ID
+      </label>
+
+      <input
+        id="companyId"
+        type="text"
+        placeholder="Contoh: ABC001"
+      >
+
+
+      <label>
+        Nama Perusahaan
+      </label>
+
+      <input
+        id="companyName"
+        type="text"
+        placeholder="Contoh: ABC Company"
+      >
+
+
+      <label>
+        API URL
+      </label>
+
+      <input
+        id="apiUrl"
+        type="text"
+        placeholder="https://api.perusahaan.com/customer"
+      >
+
+
+      <label>
+        API Key Environment
+      </label>
+
+      <input
+        id="apiKeyEnv"
+        type="text"
+        placeholder="ABC001_API_KEY"
+      >
+
+
+      <button
+        id="registerButton"
+        onclick="registerCompany()"
+      >
+        Tambah Perusahaan
+      </button>
+
+
+      <div
+        id="result"
+        class="result"
+      >
+        Belum ada proses.
+      </div>
+
+    </div>
+
+
+    <div class="card">
+
+      <h2>Test Company</h2>
+
+      <input
+        id="testCompanyId"
+        type="text"
+        placeholder="Contoh: DEMO001"
+      >
+
+      <button
+        onclick="testCompany()"
+      >
+        Cek Perusahaan
+      </button>
+
+      <div
+        id="testResult"
+        class="result"
+      >
+        Belum ada pemeriksaan.
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    async function registerCompany() {
+
+      const button =
+        document.getElementById(
+          "registerButton"
+        );
+
+      const result =
+        document.getElementById(
+          "result"
+        );
+
+      const companyId =
+        document.getElementById(
+          "companyId"
+        ).value.trim();
+
+      const companyName =
+        document.getElementById(
+          "companyName"
+        ).value.trim();
+
+      const apiUrl =
+        document.getElementById(
+          "apiUrl"
+        ).value.trim();
+
+      const apiKeyEnv =
+        document.getElementById(
+          "apiKeyEnv"
+        ).value.trim();
+
+
+      if (
+        !companyId ||
+        !companyName ||
+        !apiUrl ||
+        !apiKeyEnv
+      ) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          'Semua field harus diisi.' +
+          '</span>';
+
+        return;
+      }
+
+
+      button.disabled = true;
+
+      result.textContent =
+        "Mendaftarkan perusahaan...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/admin/company",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  companyId:
+                    companyId,
+
+                  companyName:
+                    companyName,
+
+                  apiUrl:
+                    apiUrl,
+
+                  apiKeyEnv:
+                    apiKeyEnv
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Gagal mendaftarkan perusahaan."
+          );
+
+        }
+
+
+        result.innerHTML =
+          '<span class="online">' +
+          '✓ Perusahaan berhasil didaftarkan.' +
+          '</span>\n\n' +
+          JSON.stringify(
+            data.company,
+            null,
+            2
+          );
+
+
+      } catch (error) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          error.message +
+          '</span>';
+
+      } finally {
+
+        button.disabled = false;
+
+      }
+    }
+
+
+    async function testCompany() {
+
+      const companyId =
+        document.getElementById(
+          "testCompanyId"
+        ).value.trim();
+
+
+      const result =
+        document.getElementById(
+          "testResult"
+        );
+
+
+      if (!companyId) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          'Masukkan Company ID.' +
+          '</span>';
+
+        return;
+      }
+
+
+      result.textContent =
+        "Memeriksa perusahaan...";
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/company/" +
+            encodeURIComponent(
+              companyId
+            )
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          throw new Error(
+            data.message ||
+            "Company tidak ditemukan."
+          );
+
+        }
+
+
+        result.innerHTML =
+          '<span class="online">' +
+          '✓ Company ditemukan.' +
+          '</span>\n\n' +
+          JSON.stringify(
+            data.company,
+            null,
+            2
+          );
+
+
+      } catch (error) {
+
+        result.innerHTML =
+          '<span class="error">' +
+          error.message +
+          '</span>';
+
+      }
+
+    }
+
+  </script>
+
+</body>
+  </html>
