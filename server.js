@@ -1032,7 +1032,7 @@ ${JSON.stringify(
                   0.2,
 
                 max_tokens:
-                  300
+                  500
               })
           }
         );
