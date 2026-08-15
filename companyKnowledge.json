@@ -1,31 +1,107 @@
 {
-  "DEMO001": {
-    "company_name": "Demo Company",
+  "TEST001": {
+    "company_name": "Test Company",
+
     "faq": [
       {
+        "question": "Bagaimana cara deposit?",
+        "answer": "Untuk melakukan deposit, login ke akun Anda, buka menu Deposit, pilih metode pembayaran, masukkan nominal, lalu ikuti instruksi pembayaran."
+      },
+      {
         "question": "Bagaimana cara melakukan deposit?",
-        "answer": "Customer dapat melakukan deposit melalui menu Deposit pada akun mereka."
+        "answer": "Untuk melakukan deposit, login ke akun Anda, buka menu Deposit, pilih metode pembayaran, masukkan nominal, lalu ikuti instruksi pembayaran."
       },
       {
-        "question": "Berapa lama proses deposit?",
-        "answer": "Status deposit dapat diperiksa melalui akun customer setelah transaksi dilakukan."
+        "question": "Deposit belum masuk",
+        "answer": "Silakan periksa status deposit pada akun Anda. Pastikan pembayaran sudah berhasil. Jika status belum berubah, Customer Service dapat membantu melakukan pengecekan."
       },
       {
-        "question": "Bagaimana cara melakukan withdrawal?",
-        "answer": "Customer dapat mengajukan withdrawal melalui menu Withdrawal."
+        "question": "Berapa lama deposit?",
+        "answer": "Waktu proses deposit dapat berbeda tergantung metode pembayaran yang digunakan. Silakan periksa status deposit pada akun Anda."
       },
       {
-        "question": "Berapa lama proses withdrawal?",
-        "answer": "Waktu proses withdrawal mengikuti ketentuan yang berlaku pada perusahaan."
+        "question": "Bagaimana cara withdrawal?",
+        "answer": "Untuk melakukan withdrawal, buka menu Withdrawal, masukkan nominal yang ingin ditarik, pilih metode pencairan, lalu konfirmasi pengajuan withdrawal."
       },
       {
-        "question": "Apakah ada bonus?",
-        "answer": "Bonus tersedia sesuai dengan program dan ketentuan perusahaan."
+        "question": "Bagaimana cara WD?",
+        "answer": "Untuk melakukan WD, buka menu Withdrawal, masukkan nominal yang ingin ditarik, pilih metode pencairan, lalu konfirmasi pengajuan."
+      },
+      {
+        "question": "WD belum masuk",
+        "answer": "Silakan periksa status withdrawal pada akun Anda. Jika masih dalam proses, tunggu sampai proses selesai. Jika tidak ada permintaan aktif, berarti saat ini tidak ada withdrawal yang sedang diproses."
+      },
+      {
+        "question": "Withdrawal gagal",
+        "answer": "Periksa status withdrawal dan informasi pencairan pada akun Anda. Jika withdrawal gagal, Customer Service dapat membantu melakukan pengecekan."
+      },
+      {
+        "question": "Bagaimana cara klaim bonus?",
+        "answer": "Buka menu Bonus pada akun Anda, pilih bonus yang tersedia, baca persyaratan bonus, kemudian lakukan klaim jika Anda memenuhi persyaratan."
       },
       {
         "question": "Bagaimana cara mendapatkan bonus?",
-        "answer": "Customer dapat melihat bonus yang tersedia pada akun mereka dan mengikuti ketentuan program bonus."
+        "answer": "Bonus yang tersedia dapat dilihat melalui menu Bonus. Setiap bonus memiliki persyaratan dan ketentuan masing-masing."
+      },
+      {
+        "question": "Bonus belum masuk",
+        "answer": "Silakan periksa status bonus dan persyaratan yang berlaku. Jika seluruh persyaratan sudah terpenuhi tetapi bonus belum masuk, Customer Service dapat membantu melakukan pengecekan."
+      },
+      {
+        "question": "Bagaimana cara cek saldo?",
+        "answer": "Informasi saldo dapat diperiksa melalui akun Anda. Customer Service juga dapat membantu memberikan informasi saldo berdasarkan data akun yang tersedia."
+      },
+      {
+        "question": "Bagaimana cara cek akun?",
+        "answer": "Informasi akun dapat diperiksa melalui menu Akun."
       }
-    ]
+    ],
+
+    "deposit": {
+      "title": "Cara Deposit",
+      "steps": [
+        "Login ke akun Anda.",
+        "Buka menu Deposit.",
+        "Pilih metode pembayaran yang tersedia.",
+        "Masukkan nominal deposit.",
+        "Ikuti instruksi pembayaran.",
+        "Setelah pembayaran selesai, periksa status deposit pada akun Anda."
+      ]
+    },
+
+    "withdrawal": {
+      "title": "Cara Withdrawal",
+      "steps": [
+        "Login ke akun Anda.",
+        "Buka menu Withdrawal.",
+        "Masukkan nominal withdrawal.",
+        "Pilih metode pencairan yang tersedia.",
+        "Periksa kembali informasi withdrawal.",
+        "Konfirmasi pengajuan withdrawal.",
+        "Periksa status withdrawal pada akun Anda."
+      ]
+    },
+
+    "bonus": {
+      "title": "Cara Klaim Bonus",
+      "steps": [
+        "Login ke akun Anda.",
+        "Buka menu Bonus.",
+        "Pilih bonus yang tersedia.",
+        "Baca persyaratan dan ketentuan bonus.",
+        "Klik Klaim jika Anda memenuhi persyaratan.",
+        "Periksa status bonus setelah klaim."
+      ]
+    },
+
+    "other": {
+      "account": "Informasi akun dapat diperiksa melalui menu Akun.",
+
+      "transaction": "Status transaksi dapat diperiksa melalui akun Anda.",
+
+      "customer_service": "Jika mengalami masalah dengan akun, deposit, withdrawal, atau bonus, customer dapat menggunakan Live Chat untuk mendapatkan bantuan.",
+
+      "security": "Customer Service tidak akan meminta password, PIN, OTP, atau kode keamanan."
+    }
   }
-}
+  }
