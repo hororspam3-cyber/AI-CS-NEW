@@ -20,11 +20,11 @@
       .toUpperCase();
 
   const customerId =
-    String(
-      script?.dataset?.customerId || ""
-    )
-      .trim()
-      .toUpperCase();
+  String(
+    window.currentCustomer?.id || ""
+  )
+    .trim()
+    .toUpperCase();
 
   /*
   ========================================
