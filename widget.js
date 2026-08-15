@@ -3,23 +3,28 @@
 
   /*
   ========================================
-  AI-CS LIVE CHAT WIDGET
+  AI-CS NEW — LIVE CHAT WIDGET
   ========================================
   */
 
   const script = document.currentScript;
 
-  const companyId = String(
-    script?.dataset?.companyId || ""
-  )
-    .trim()
-    .toUpperCase();
+  const AI_CS_URL =
+    "https://ai-cs-new.onrender.com";
 
-  const customerId = String(
-    script?.dataset?.customerId || ""
-  )
-    .trim()
-    .toUpperCase();
+  const companyId =
+    String(
+      script?.dataset?.companyId || ""
+    )
+      .trim()
+      .toUpperCase();
+
+  const customerId =
+    String(
+      script?.dataset?.customerId || ""
+    )
+      .trim()
+      .toUpperCase();
 
   /*
   ========================================
@@ -27,21 +32,19 @@
   ========================================
   */
 
-  if (!companyId || !customerId) {
+  if (!companyId) {
     console.error(
-      "AI-CS: companyId dan customerId wajib diisi."
+      "AI-CS: data-company-id wajib diisi."
     );
     return;
   }
 
-  /*
-  ========================================
-  AI-CS SERVER
-  ========================================
-  */
-
-  const AI_CS_URL =
-    "https://ai-cs-new.onrender.com";
+  if (!customerId) {
+    console.error(
+      "AI-CS: data-customer-id wajib diisi."
+    );
+    return;
+  }
 
   /*
   ========================================
@@ -75,13 +78,6 @@
 
       box-shadow:
         0 4px 15px rgba(0,0,0,0.25);
-
-      transition:
-        transform 0.2s ease;
-    }
-
-    #aics-button:hover {
-      transform: scale(1.05);
     }
 
     #aics-window {
@@ -106,9 +102,7 @@
 
       z-index: 999999;
 
-      font-family:
-        Arial,
-        sans-serif;
+      font-family: Arial, sans-serif;
     }
 
     #aics-header {
@@ -118,17 +112,28 @@
       padding: 15px;
     }
 
-    #aics-header-title {
+    #aics-title {
       font-weight: bold;
       font-size: 16px;
     }
 
-    #aics-header-status {
+    #aics-status {
       margin-top: 4px;
-
       font-size: 12px;
-
       color: #d1d5db;
+    }
+
+    #aics-close {
+      float: right;
+
+      border: none;
+      background: transparent;
+
+      color: white;
+
+      font-size: 20px;
+
+      cursor: pointer;
     }
 
     #aics-messages {
@@ -176,8 +181,7 @@
 
       padding: 10px;
 
-      border-top:
-        1px solid #ddd;
+      border-top: 1px solid #ddd;
 
       background: white;
     }
@@ -189,8 +193,7 @@
 
       padding: 10px;
 
-      border:
-        1px solid #ccc;
+      border: 1px solid #ccc;
 
       border-radius: 8px;
 
@@ -215,39 +218,15 @@
 
     #aics-send:disabled {
       opacity: 0.5;
-
-      cursor: not-allowed;
-    }
-
-    #aics-close {
-      float: right;
-
-      border: none;
-
-      background: transparent;
-
-      color: white;
-
-      font-size: 20px;
-
-      cursor: pointer;
-
-      line-height: 1;
     }
 
     @media (max-width: 500px) {
-
-      #aics-button {
-        right: 15px;
-        bottom: 15px;
-      }
 
       #aics-window {
         right: 10px;
         bottom: 80px;
 
-        width:
-          calc(100% - 20px);
+        width: calc(100% - 20px);
 
         height: 70vh;
 
@@ -255,8 +234,7 @@
       }
 
       #aics-messages {
-        height:
-          calc(70vh - 110px);
+        height: calc(70vh - 110px);
 
         max-height: 490px;
       }
@@ -267,21 +245,18 @@
 
   /*
   ========================================
-  CHAT BUTTON
+  TOMBOL CHAT
   ========================================
   */
 
   const button =
     document.createElement("button");
 
-  button.id =
-    "aics-button";
+  button.id = "aics-button";
 
-  button.type =
-    "button";
+  button.type = "button";
 
-  button.textContent =
-    "💬";
+  button.textContent = "💬";
 
   button.setAttribute(
     "aria-label",
@@ -292,15 +267,14 @@
 
   /*
   ========================================
-  CHAT WINDOW
+  WINDOW CHAT
   ========================================
   */
 
   const chat =
     document.createElement("div");
 
-  chat.id =
-    "aics-window";
+  chat.id = "aics-window";
 
   chat.innerHTML = `
     <div id="aics-header">
@@ -308,16 +282,15 @@
       <button
         id="aics-close"
         type="button"
-        aria-label="Tutup chat"
       >
         ×
       </button>
 
-      <div id="aics-header-title">
+      <div id="aics-title">
         AI Customer Service
       </div>
 
-      <div id="aics-header-status">
+      <div id="aics-status">
         ● Online
       </div>
 
@@ -325,10 +298,8 @@
 
     <div id="aics-messages">
 
-      <div
-        class="aics-message aics-ai"
-      >
-        Halo, ada yang bisa saya bantu?
+      <div class="aics-message aics-ai">
+        Halo Rina, ada yang bisa saya bantu?
       </div>
 
     </div>
@@ -380,14 +351,9 @@
       "aics-messages"
     );
 
-  const status =
-    document.getElementById(
-      "aics-header-status"
-    );
-
   /*
   ========================================
-  OPEN CHAT
+  BUKA CHAT
   ========================================
   */
 
@@ -395,27 +361,23 @@
     "click",
     function () {
 
+      chat.style.display =
+        chat.style.display === "block"
+          ? "none"
+          : "block";
+
       if (
         chat.style.display === "block"
       ) {
-
-        chat.style.display =
-          "none";
-
-        return;
+        input.focus();
       }
-
-      chat.style.display =
-        "block";
-
-      input.focus();
 
     }
   );
 
   /*
   ========================================
-  CLOSE CHAT
+  TUTUP CHAT
   ========================================
   */
 
@@ -431,7 +393,7 @@
 
   /*
   ========================================
-  ADD MESSAGE
+  TAMBAH PESAN
   ========================================
   */
 
@@ -441,9 +403,7 @@
   ) {
 
     const message =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     message.className =
       "aics-message " +
@@ -466,7 +426,7 @@
 
   /*
   ========================================
-  SEND MESSAGE
+  KIRIM PESAN
   ========================================
   */
 
@@ -479,12 +439,6 @@
       return;
     }
 
-    /*
-    ----------------------------------------
-    CUSTOMER MESSAGE
-    ----------------------------------------
-    */
-
     addMessage(
       message,
       "user"
@@ -492,19 +446,10 @@
 
     input.value = "";
 
-    sendButton.disabled =
-      true;
-
-    /*
-    ----------------------------------------
-    LOADING
-    ----------------------------------------
-    */
+    sendButton.disabled = true;
 
     const loading =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
     loading.className =
       "aics-message aics-ai";
@@ -521,16 +466,10 @@
 
     try {
 
-      /*
-      ======================================
-      KIRIM KE AI-CS
-      ======================================
-      */
-
       const response =
-  await fetch(
-    AI_CS_URL +
-    "/api/chat",
+        await fetch(
+          AI_CS_URL +
+          "/api/chat",
           {
             method: "POST",
 
@@ -555,40 +494,10 @@
           }
         );
 
-      /*
-      ======================================
-      BACA RESPONSE
-      ======================================
-      */
-
-      let data;
-
-      try {
-
-        data =
-          await response.json();
-
-      } catch (jsonError) {
-
-        throw new Error(
-          "Response server tidak valid."
-        );
-
-      }
-
-      /*
-      ======================================
-      HAPUS LOADING
-      ======================================
-      */
+      const data =
+        await response.json();
 
       loading.remove();
-
-      /*
-      ======================================
-      ERROR SERVER
-      ======================================
-      */
 
       if (
         !response.ok ||
@@ -603,12 +512,6 @@
 
         return;
       }
-
-      /*
-      ======================================
-      JAWABAN AI
-      ======================================
-      */
 
       addMessage(
         data.reply ||
@@ -626,13 +529,9 @@
       loading.textContent =
         "Tidak dapat terhubung ke AI Customer Service.";
 
-      status.textContent =
-        "● Connection error";
-
     } finally {
 
-      sendButton.disabled =
-        false;
+      sendButton.disabled = false;
 
       input.focus();
 
@@ -641,7 +540,7 @@
 
   /*
   ========================================
-  SEND BUTTON
+  TOMBOL KIRIM
   ========================================
   */
 
@@ -680,7 +579,7 @@
   */
 
   console.log(
-    "AI-CS Widget aktif:",
+    "AI-CS New Widget aktif",
     {
       companyId:
         companyId,
