@@ -1471,6 +1471,152 @@ app.get(
 
 /*
 ========================================
+ADMIN TEST CUSTOMER API
+========================================
+*/
+
+app.get(
+  "/api/admin/test-customer/:companyId/:customerId",
+  function (req, res) {
+    try {
+
+      const companyId =
+        String(
+          req.params.companyId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      const customerId =
+        String(
+          req.params.customerId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Company ID diperlukan."
+        });
+      }
+
+      if (!customerId) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Customer ID diperlukan."
+        });
+      }
+
+      const companies =
+        loadCompanies();
+
+      const company =
+        companies[companyId];
+
+      if (!company) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Company tidak ditemukan."
+        });
+      }
+
+      const apiKey =
+        process.env[
+          company.api_key_env
+        ];
+
+      if (!apiKey) {
+        return res.status(500).json({
+          success: false,
+          message:
+            "API key company belum tersedia."
+        });
+      }
+
+      const customers =
+        loadCustomers();
+
+      const customer =
+        customers[customerId];
+
+      if (!customer) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Customer tidak ditemukan."
+        });
+      }
+
+      if (
+        String(
+          customer.company_id || ""
+        )
+          .trim()
+          .toUpperCase() !==
+        companyId
+      ) {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Customer bukan milik company ini."
+        });
+      }
+
+      return res.json({
+        success: true,
+
+        companyId:
+          companyId,
+
+        customer: {
+          id:
+            customer.id,
+
+          name:
+            customer.name,
+
+          company_id:
+            customer.company_id,
+
+          account_status:
+            customer.account_status,
+
+          balance:
+            customer.balance,
+
+          deposit:
+            customer.deposit,
+
+          withdrawal:
+            customer.withdrawal,
+
+          bonus:
+            customer.bonus
+        }
+      });
+
+    } catch (error) {
+
+      console.error(
+        "ADMIN TEST CUSTOMER ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal melakukan test customer API."
+      });
+    }
+  }
+);
+
+/*
+========================================
 SERVER
 ========================================
 */
