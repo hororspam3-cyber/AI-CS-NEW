@@ -10,9 +10,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>
-    Test Company - TEST001
-  </title>
+  <title>Test Company - TEST001</title>
 
   <style>
 
@@ -22,67 +20,44 @@
 
     body {
       margin: 0;
-
-      font-family:
-        Arial,
-        sans-serif;
-
-      background:
-        #f4f6f8;
-
-      color:
-        #111827;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #111827;
     }
 
     .header {
-      background:
-        #111827;
-
+      background: #111827;
       color: white;
-
       padding: 18px 25px;
     }
 
     .header h1 {
       margin: 0;
-
       font-size: 22px;
     }
 
     .header p {
       margin: 5px 0 0;
-
-      color:
-        #d1d5db;
-
+      color: #d1d5db;
       font-size: 13px;
     }
 
     .container {
       max-width: 900px;
-
       margin: 40px auto;
-
       padding: 20px;
     }
 
     .card {
       background: white;
-
       padding: 30px;
-
       border-radius: 15px;
-
-      box-shadow:
-        0 4px 15px
-        rgba(0,0,0,0.08);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
 
     .login-card {
       max-width: 450px;
-
-      margin:
-        60px auto;
+      margin: 60px auto;
     }
 
     .login-card h2 {
@@ -95,192 +70,286 @@
 
     .form-group label {
       display: block;
-
       margin-bottom: 7px;
-
       font-size: 14px;
-
       font-weight: bold;
     }
 
     .form-group input {
       width: 100%;
-
       padding: 12px;
-
-      border:
-        1px solid #d1d5db;
-
+      border: 1px solid #d1d5db;
       border-radius: 8px;
-
       font-size: 14px;
-
       outline: none;
-    }
-
-    .form-group input:focus {
-      border-color:
-        #111827;
     }
 
     .login-button {
       width: 100%;
-
       padding: 12px;
-
       border: none;
-
       border-radius: 8px;
-
-      background:
-        #111827;
-
+      background: #111827;
       color: white;
-
       font-size: 14px;
-
       cursor: pointer;
     }
 
     .login-button:disabled {
       opacity: 0.6;
-
       cursor: not-allowed;
     }
 
     .error {
       display: none;
-
       margin-top: 15px;
-
       padding: 10px;
-
       border-radius: 8px;
-
-      background:
-        #fee2e2;
-
-      color:
-        #991b1b;
-
+      background: #fee2e2;
+      color: #991b1b;
       font-size: 13px;
     }
 
     .success {
       display: none;
-
       margin-top: 15px;
-
       padding: 10px;
-
       border-radius: 8px;
-
-      background:
-        #dcfce7;
-
-      color:
-        #166534;
-
+      background: #dcfce7;
+      color: #166534;
       font-size: 13px;
     }
 
     .customer {
       display: flex;
-
       align-items: center;
-
       gap: 15px;
-
       padding: 18px;
-
-      background:
-        #f9fafb;
-
+      background: #f9fafb;
       border-radius: 10px;
-
       margin-bottom: 25px;
     }
 
     .avatar {
       width: 50px;
       height: 50px;
-
       display: flex;
-
       align-items: center;
       justify-content: center;
-
       border-radius: 50%;
-
-      background:
-        #111827;
-
+      background: #111827;
       color: white;
-
       font-size: 20px;
     }
 
     .customer-info strong {
       display: block;
-
       font-size: 17px;
     }
 
     .customer-info span {
       display: block;
-
       margin-top: 4px;
-
-      color:
-        #6b7280;
-
+      color: #6b7280;
       font-size: 13px;
     }
 
     .status {
       display: inline-block;
-
       margin-top: 5px;
-
       padding: 4px 8px;
-
       border-radius: 20px;
-
-      background:
-        #dcfce7;
-
-      color:
-        #166534;
-
-      font-size: 12px;
+      background: #dcfce7;
+      color: #166534 !important;
+      font-size: 12px !important;
     }
 
     .info {
       line-height: 1.7;
-
-      color:
-        #4b5563;
+      color: #4b5563;
     }
 
     .info strong {
-      color:
-        #111827;
-    }
-
-    .chat-info {
-      margin-top: 25px;
-
-      padding: 15px;
-
-      border-left:
-        4px solid #111827;
-
-      background:
-        #f9fafb;
+      color: #111827;
     }
 
     #companyPage {
       display: none;
+    }
+
+    /* ========================================
+       CHAT
+    ======================================== */
+
+    .chat-button {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+
+      width: 60px;
+      height: 60px;
+
+      border: none;
+      border-radius: 50%;
+
+      background: #111827;
+      color: white;
+
+      font-size: 25px;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 5px 20px rgba(0,0,0,0.25);
+
+      z-index: 9999;
+    }
+
+    .chat-box {
+      display: none;
+
+      position: fixed;
+
+      right: 20px;
+      bottom: 90px;
+
+      width: 360px;
+      max-width: calc(100vw - 30px);
+
+      height: 500px;
+
+      background: white;
+
+      border-radius: 15px;
+
+      box-shadow:
+        0 8px 30px rgba(0,0,0,0.25);
+
+      overflow: hidden;
+
+      z-index: 9999;
+
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background: #111827;
+      color: white;
+
+      padding: 15px;
+
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-title {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .chat-online {
+      font-size: 11px;
+      color: #86efac;
+      margin-top: 3px;
+    }
+
+    .chat-close {
+      border: none;
+      background: transparent;
+      color: white;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    .chat-messages {
+      flex: 1;
+
+      padding: 15px;
+
+      overflow-y: auto;
+
+      background: #f9fafb;
+    }
+
+    .chat-message {
+      max-width: 85%;
+
+      padding: 10px 12px;
+
+      margin-bottom: 10px;
+
+      border-radius: 12px;
+
+      font-size: 14px;
+
+      line-height: 1.5;
+
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .chat-ai {
+      background: #e5e7eb;
+      color: #111827;
+      margin-right: auto;
+    }
+
+    .chat-user {
+      background: #111827;
+      color: white;
+      margin-left: auto;
+    }
+
+    .chat-input-area {
+      display: flex;
+
+      gap: 8px;
+
+      padding: 10px;
+
+      border-top: 1px solid #ddd;
+
+      background: white;
+    }
+
+    .chat-input {
+      flex: 1;
+
+      border:
+        1px solid #d1d5db;
+
+      border-radius: 8px;
+
+      padding: 10px;
+
+      outline: none;
+
+      font-size: 14px;
+    }
+
+    .chat-send {
+      border: none;
+
+      border-radius: 8px;
+
+      padding: 10px 14px;
+
+      background: #111827;
+
+      color: white;
+
+      cursor: pointer;
+    }
+
+    .chat-send:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .typing {
+      color: #6b7280;
+      font-style: italic;
     }
 
   </style>
@@ -291,7 +360,9 @@
 <body>
 
 
-  <!-- HEADER -->
+  <!-- ========================================
+       HEADER
+       ======================================== -->
 
   <header class="header">
 
@@ -306,7 +377,9 @@
   </header>
 
 
-  <!-- LOGIN -->
+  <!-- ========================================
+       LOGIN
+       ======================================== -->
 
   <main
     id="loginPage"
@@ -324,7 +397,6 @@
         Live Chat AI Customer Service.
       </p>
 
-
       <div class="form-group">
 
         <label for="customerId">
@@ -334,12 +406,11 @@
         <input
           id="customerId"
           type="text"
-          placeholder="Contoh: TESTCUSTOMER001"
+          placeholder="TESTCUSTOMER001"
           autocomplete="off"
         >
 
       </div>
-
 
       <button
         id="loginButton"
@@ -349,12 +420,10 @@
         Login
       </button>
 
-
       <div
         id="loginError"
         class="error"
       ></div>
-
 
       <div
         id="loginSuccess"
@@ -366,7 +435,9 @@
   </main>
 
 
-  <!-- COMPANY PAGE -->
+  <!-- ========================================
+       COMPANY PAGE
+       ======================================== -->
 
   <main
     id="companyPage"
@@ -379,10 +450,12 @@
         Customer Demo
       </h2>
 
-
       <div class="customer">
 
-        <div class="avatar">
+        <div
+          id="customerAvatar"
+          class="avatar"
+        >
           B
         </div>
 
@@ -440,38 +513,108 @@
 
       </div>
 
+    </div>
 
-      <div class="chat-info">
+  </main>
 
-        💬
-        <strong>
-          Live Chat AI-CS New
-        </strong>
 
-        <p>
-          Login berhasil.
-          Sekarang gunakan tombol chat
-          di pojok kanan bawah untuk
-          menghubungi AI Customer Service.
-        </p>
+  <!-- ========================================
+       CHAT BUTTON
+       ======================================== -->
 
+  <button
+    id="chatButton"
+    class="chat-button"
+    type="button"
+    style="display:none;"
+  >
+    💬
+  </button>
+
+
+  <!-- ========================================
+       CHAT BOX
+       ======================================== -->
+
+  <div
+    id="chatBox"
+    class="chat-box"
+  >
+
+    <div class="chat-header">
+
+      <div>
+
+        <div class="chat-title">
+          🤖 AI Customer Service
+        </div>
+
+        <div class="chat-online">
+          ● Online
+        </div>
+
+      </div>
+
+      <button
+        id="chatClose"
+        class="chat-close"
+        type="button"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div
+      id="chatMessages"
+      class="chat-messages"
+    >
+
+      <div class="chat-message chat-ai">
+        Halo, ada yang bisa saya bantu?
       </div>
 
     </div>
 
-  </main>
+
+    <div class="chat-input-area">
+
+      <input
+        id="chatInput"
+        class="chat-input"
+        type="text"
+        placeholder="Tulis pesan..."
+        autocomplete="off"
+      >
+
+      <button
+        id="chatSend"
+        class="chat-send"
+        type="button"
+      >
+        Kirim
+      </button>
+
+    </div>
+
+  </div>
 
 
   <script>
 
     /*
     ========================================
-    TEST COMPANY
+    CONFIG TEST COMPANY
     ========================================
     */
 
     const COMPANY_ID =
       "TEST001";
+
+
+    let currentCustomer =
+      null;
 
 
     /*
@@ -510,10 +653,40 @@
         "loginSuccess"
       );
 
+    const chatButton =
+      document.getElementById(
+        "chatButton"
+      );
+
+    const chatBox =
+      document.getElementById(
+        "chatBox"
+      );
+
+    const chatClose =
+      document.getElementById(
+        "chatClose"
+      );
+
+    const chatMessages =
+      document.getElementById(
+        "chatMessages"
+      );
+
+    const chatInput =
+      document.getElementById(
+        "chatInput"
+      );
+
+    const chatSend =
+      document.getElementById(
+        "chatSend"
+      );
+
 
     /*
     ========================================
-    LOGIN
+    LOGIN CUSTOMER
     ========================================
     */
 
@@ -614,15 +787,24 @@
 
         /*
         ========================================
-        LOGIN BERHASIL
+        SIMPAN CUSTOMER
         ========================================
         */
 
-        window.currentCustomer = {
+        currentCustomer = {
           id:
-            customer.id
+            customer.id,
+
+          name:
+            customer.name
         };
 
+
+        /*
+        ========================================
+        TAMPILKAN DATA
+        ========================================
+        */
 
         document.getElementById(
           "customerName"
@@ -648,6 +830,14 @@
           customer.id;
 
 
+        document.getElementById(
+          "customerAvatar"
+        ).textContent =
+          customer.name
+            .charAt(0)
+            .toUpperCase();
+
+
         loginSuccess.textContent =
           "Login berhasil sebagai " +
           customer.name +
@@ -659,7 +849,7 @@
 
         /*
         ========================================
-        TAMPILKAN COMPANY
+        PINDAH KE HALAMAN COMPANY
         ========================================
         */
 
@@ -672,13 +862,29 @@
 
         /*
         ========================================
-        LOAD AI-CS WIDGET
+        TAMPILKAN CHAT
         ========================================
         */
 
-        loadAIWidget(
-          customer.id
+        chatButton.style.display =
+          "block";
+
+
+        /*
+        ========================================
+        RESET CHAT
+        ========================================
+        */
+
+        chatMessages.innerHTML = "";
+
+
+        addAIMessage(
+          "Halo " +
+          customer.name +
+          ", ada yang bisa saya bantu?"
         );
+
 
       } catch (error) {
 
@@ -708,56 +914,311 @@
 
     /*
     ========================================
-    LOAD WIDGET
+    BUKA CHAT
     ========================================
     */
 
-    function loadAIWidget(
-      customerId
+    chatButton.addEventListener(
+      "click",
+      function () {
+
+        chatBox.style.display =
+          "flex";
+
+        chatInput.focus();
+
+      }
+    );
+
+
+    /*
+    ========================================
+    TUTUP CHAT
+    ========================================
+    */
+
+    chatClose.addEventListener(
+      "click",
+      function () {
+
+        chatBox.style.display =
+          "none";
+
+      }
+    );
+
+
+    /*
+    ========================================
+    TAMBAH PESAN USER
+    ========================================
+    */
+
+    function addUserMessage(
+      message
     ) {
 
-      window.currentCustomer = {
-        id:
-          customerId
-      };
-
-
-      const script =
+      const element =
         document.createElement(
-          "script"
+          "div"
         );
 
+      element.className =
+        "chat-message chat-user";
 
-      script.src =
-        "https://ai-cs-new.onrender.com/widget.js";
+      element.textContent =
+        message;
 
-
-      script.dataset.companyId =
-        COMPANY_ID;
-
-
-      document.body.appendChild(
-        script
+      chatMessages.appendChild(
+        element
       );
+
+      chatMessages.scrollTop =
+        chatMessages.scrollHeight;
 
     }
 
 
     /*
     ========================================
-    BUTTON LOGIN
+    TAMBAH PESAN AI
     ========================================
     */
 
-    loginButton.addEventListener(
+    function addAIMessage(
+      message
+    ) {
+
+      const element =
+        document.createElement(
+          "div"
+        );
+
+      element.className =
+        "chat-message chat-ai";
+
+      element.textContent =
+        message;
+
+      chatMessages.appendChild(
+        element
+      );
+
+      chatMessages.scrollTop =
+        chatMessages.scrollHeight;
+
+    }
+
+
+    /*
+    ========================================
+    KIRIM PESAN KE AI
+    ========================================
+    */
+
+    async function sendMessage() {
+
+      if (!currentCustomer) {
+
+        addAIMessage(
+          "Silakan login terlebih dahulu."
+        );
+
+        return;
+      }
+
+
+      const message =
+        chatInput.value.trim();
+
+
+      if (!message) {
+        return;
+      }
+
+
+      /*
+      ========================================
+      TAMPILKAN PESAN USER
+      ========================================
+      */
+
+      addUserMessage(
+        message
+      );
+
+
+      chatInput.value = "";
+
+      chatSend.disabled =
+        true;
+
+
+      /*
+      ========================================
+      LOADING
+      ========================================
+      */
+
+      const loading =
+        document.createElement(
+          "div"
+        );
+
+      loading.className =
+        "chat-message chat-ai typing";
+
+      loading.textContent =
+        "Sedang mengetik...";
+
+      chatMessages.appendChild(
+        loading
+      );
+
+
+      chatMessages.scrollTop =
+        chatMessages.scrollHeight;
+
+
+      try {
+
+        /*
+        ========================================
+        KIRIM KE SERVER AI-CS
+        ========================================
+        */
+
+        const response =
+          await fetch(
+            "/api/chat",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+
+                  companyId:
+                    COMPANY_ID,
+
+                  customerId:
+                    currentCustomer.id,
+
+                  message:
+                    message
+
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        loading.remove();
+
+
+        /*
+        ========================================
+        CEK ERROR
+        ========================================
+        */
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+
+          addAIMessage(
+            data.message ||
+            "AI tidak dapat memberikan jawaban."
+          );
+
+          return;
+        }
+
+
+        /*
+        ========================================
+        JAWABAN AI
+        ========================================
+        */
+
+        addAIMessage(
+          data.reply ||
+          "AI tidak memberikan jawaban."
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "CHAT ERROR:",
+          error
+        );
+
+        loading.remove();
+
+        addAIMessage(
+          "Tidak dapat terhubung ke AI Customer Service."
+        );
+
+      } finally {
+
+        chatSend.disabled =
+          false;
+
+        chatInput.focus();
+
+      }
+
+    }
+
+
+    /*
+    ========================================
+    BUTTON KIRIM
+    ========================================
+    */
+
+    chatSend.addEventListener(
       "click",
-      loginCustomer
+      sendMessage
     );
 
 
     /*
     ========================================
-    ENTER
+    ENTER UNTUK KIRIM
+    ========================================
+    */
+
+    chatInput.addEventListener(
+      "keydown",
+      function (event) {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          sendMessage();
+
+        }
+
+      }
+    );
+
+
+    /*
+    ========================================
+    ENTER LOGIN
     ========================================
     */
 
@@ -778,8 +1239,19 @@
       }
     );
 
-  </script>
 
+    /*
+    ========================================
+    LOGIN BUTTON
+    ========================================
+    */
+
+    loginButton.addEventListener(
+      "click",
+      loginCustomer
+    );
+
+  </script>
 
 </body>
 
