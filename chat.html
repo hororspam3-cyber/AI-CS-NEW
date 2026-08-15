@@ -339,9 +339,56 @@ function getCustomerFromUrl() {
 
         startButton.disabled = true;
 
-        const customer =
-          await loginDemo();
+        const urlCustomer =
+  getCustomerFromUrl();
 
+let customer;
+
+if (urlCustomer) {
+
+  const response =
+    await fetch(
+      "/api/login",
+      {
+        method: "POST",
+
+        credentials: "include",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body:
+          JSON.stringify({
+            customerId:
+              urlCustomer.customerId
+          })
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if (
+    !response.ok ||
+    !data.success
+  ) {
+    throw new Error(
+      data.message ||
+      "Login customer gagal."
+    );
+  }
+
+  customer =
+    data.customer;
+
+} else {
+
+  customer =
+    await loginDemo();
+
+}
         customerInfo.textContent =
           "● Online · " +
           customer.name;
