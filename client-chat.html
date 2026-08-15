@@ -1,0 +1,504 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Client Demo - Live Chat</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+    }
+
+    .chat-container {
+      max-width: 500px;
+      height: 100vh;
+      margin: auto;
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: #111827;
+      color: white;
+      padding: 20px;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .header p {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      max-width: 85%;
+      padding: 12px 15px;
+      border-radius: 12px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .ai {
+      background: #f0f1f3;
+      color: #111827;
+    }
+
+    .user {
+      background: #111827;
+      color: white;
+      margin-left: auto;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 12px;
+      border-top: 1px solid #ddd;
+      gap: 8px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .input-area button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #111827;
+      color: white;
+      cursor: pointer;
+    }
+
+    .input-area button:disabled {
+      opacity: 0.5;
+    }
+
+    .status {
+      font-size: 13px;
+      color: #15803d;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="chat-container">
+
+    <div class="header">
+
+      <h2>Client Demo</h2>
+
+      <p>
+        AI Customer Service
+      </p>
+
+      <div
+        id="status"
+        class="status"
+      >
+        ● Menghubungkan...
+      </div>
+
+    </div>
+
+
+    <div
+      id="messages"
+      class="messages"
+    >
+
+      <div class="message ai">
+        Menghubungkan ke AI Customer Service...
+      </div>
+
+    </div>
+
+
+    <div class="input-area">
+
+      <input
+        id="messageInput"
+        type="text"
+        placeholder="Tulis pesan..."
+        autocomplete="off"
+        disabled
+      >
+
+      <button
+        id="sendButton"
+        onclick="sendMessage()"
+        disabled
+      >
+        Kirim
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    /*
+    ========================================
+    DATA CUSTOMER DARI WEBSITE CLIENT
+    ========================================
+    */
+
+    const COMPANY_ID =
+      "CLIENT001";
+
+    const CUSTOMER_ID =
+      "CUSTOMER001";
+
+
+    /*
+    ========================================
+    MULAI SESSION CUSTOMER
+    ========================================
+    */
+
+    async function startClientChat() {
+
+      const status =
+        document.getElementById(
+          "status"
+        );
+
+      const messages =
+        document.getElementById(
+          "messages"
+        );
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/client-chat/start",
+            {
+              method: "POST",
+
+              credentials: "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  companyId:
+                    COMPANY_ID,
+
+                  customerId:
+                    CUSTOMER_ID
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (
+          !response.ok ||
+          !data.success
+        ) {
+          throw new Error(
+            data.message ||
+            "Gagal memulai chat."
+          );
+        }
+
+
+        status.textContent =
+          "● Online · " +
+          data.customer.name;
+
+
+        messages.innerHTML = "";
+
+
+        const welcome =
+          document.createElement(
+            "div"
+          );
+
+        welcome.className =
+          "message ai";
+
+        welcome.textContent =
+          "Halo " +
+          data.customer.name +
+          ", ada yang bisa saya bantu?";
+
+        messages.appendChild(
+          welcome
+        );
+
+
+        document.getElementById(
+          "messageInput"
+        ).disabled = false;
+
+
+        document.getElementById(
+          "sendButton"
+        ).disabled = false;
+
+
+        document.getElementById(
+          "messageInput"
+        ).focus();
+
+
+      } catch (error) {
+
+        status.textContent =
+          "● Offline";
+
+
+        messages.innerHTML = "";
+
+
+        const errorMessage =
+          document.createElement(
+            "div"
+          );
+
+        errorMessage.className =
+          "message ai";
+
+        errorMessage.textContent =
+          "Tidak dapat terhubung ke AI-CS.";
+
+        messages.appendChild(
+          errorMessage
+        );
+
+
+        console.error(
+          "START CHAT ERROR:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /*
+    ========================================
+    KIRIM PESAN
+    ========================================
+    */
+
+    async function sendMessage() {
+
+      const input =
+        document.getElementById(
+          "messageInput"
+        );
+
+      const button =
+        document.getElementById(
+          "sendButton"
+        );
+
+      const messages =
+        document.getElementById(
+          "messages"
+        );
+
+
+      const message =
+        input.value.trim();
+
+
+      if (!message) {
+        return;
+      }
+
+
+      const userMessage =
+        document.createElement(
+          "div"
+        );
+
+      userMessage.className =
+        "message user";
+
+      userMessage.textContent =
+        message;
+
+      messages.appendChild(
+        userMessage
+      );
+
+
+      input.value = "";
+
+      button.disabled = true;
+
+
+      const loading =
+        document.createElement(
+          "div"
+        );
+
+      loading.className =
+        "message ai";
+
+      loading.textContent =
+        "Sedang mengetik...";
+
+      messages.appendChild(
+        loading
+      );
+
+
+      messages.scrollTop =
+        messages.scrollHeight;
+
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/client-chat/message",
+            {
+              method: "POST",
+
+              credentials: "include",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  message:
+                    message
+                })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        loading.remove();
+
+
+        const aiMessage =
+          document.createElement(
+            "div"
+          );
+
+        aiMessage.className =
+          "message ai";
+
+        aiMessage.textContent =
+          data.reply ||
+          data.message ||
+          "AI tidak memberikan jawaban.";
+
+        messages.appendChild(
+          aiMessage
+        );
+
+
+        messages.scrollTop =
+          messages.scrollHeight;
+
+
+      } catch (error) {
+
+        loading.textContent =
+          "Tidak dapat terhubung ke AI.";
+
+        console.error(
+          "CLIENT CHAT ERROR:",
+          error
+        );
+
+      } finally {
+
+        button.disabled = false;
+
+        input.focus();
+
+      }
+
+    }
+
+
+    /*
+    ========================================
+    ENTER UNTUK KIRIM
+    ========================================
+    */
+
+    document
+      .getElementById(
+        "messageInput"
+      )
+      .addEventListener(
+        "keydown",
+        function (event) {
+
+          if (
+            event.key === "Enter"
+          ) {
+            sendMessage();
+          }
+
+        }
+      );
+
+
+    /*
+    ========================================
+    START
+    ========================================
+    */
+
+    startClientChat();
+
+  </script>
+
+</body>
+</html>
