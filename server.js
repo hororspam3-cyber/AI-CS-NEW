@@ -1359,6 +1359,118 @@ app.get(
 
 /*
 ========================================
+CLIENT DEMO API
+========================================
+*/
+
+app.get(
+  "/api/client-demo/customer/:customerId",
+  function (req, res) {
+    try {
+
+      const companyId =
+        String(
+          req.headers["x-company-id"] || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (companyId !== "CLIENT001") {
+        return res.status(403).json({
+          success: false,
+          message:
+            "Company tidak diizinkan."
+        });
+      }
+
+      const apiKey =
+        String(
+          req.headers["x-api-key"] || ""
+        ).trim();
+
+      const expectedApiKey =
+        process.env.CLIENT001_API_KEY;
+
+      if (!expectedApiKey) {
+        return res.status(500).json({
+          success: false,
+          message:
+            "CLIENT001_API_KEY belum tersedia."
+        });
+      }
+
+      if (apiKey !== expectedApiKey) {
+        return res.status(401).json({
+          success: false,
+          message:
+            "API key tidak valid."
+        });
+      }
+
+      const customerId =
+        String(
+          req.params.customerId || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (
+        customerId !==
+        "CUSTOMER001"
+      ) {
+        return res.status(404).json({
+          success: false,
+          message:
+            "Customer tidak ditemukan."
+        });
+      }
+
+      return res.json({
+        success: true,
+
+        customer: {
+          id: "CUSTOMER001",
+          name: "Rina",
+          company_id: "CLIENT001",
+          account_status: "Aktif",
+          balance: 4000000,
+
+          deposit: {
+            status: "Berhasil",
+            amount: 2000000
+          },
+
+          withdrawal: {
+            status:
+              "Tidak ada permintaan aktif",
+            amount: 0
+          },
+
+          bonus: {
+            status: "Tersedia",
+            amount: 300000
+          }
+        }
+      });
+
+    } catch (error) {
+
+      console.error(
+        "CLIENT DEMO API ERROR:",
+        error
+      );
+
+      return res.status(500).json({
+        success: false,
+        message:
+          "Gagal mengambil data customer."
+      });
+    }
+  }
+);
+
+/*
+========================================
 SERVER
 ========================================
 */
