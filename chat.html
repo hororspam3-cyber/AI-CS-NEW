@@ -614,6 +614,44 @@ if (urlCustomer) {
         }
       );
 
+    /*
+========================================
+AUTO START DARI URL
+========================================
+*/
+
+const urlCustomer =
+  getCustomerFromUrl();
+
+if (urlCustomer) {
+
+  const customerSelect =
+    document.getElementById(
+      "customerSelect"
+    );
+
+  const startButton =
+    document.getElementById(
+      "startButton"
+    );
+
+  const customerInfo =
+    document.getElementById(
+      "customerInfo"
+    );
+
+  customerSelect.style.display =
+    "none";
+
+  startButton.style.display =
+    "none";
+
+  customerInfo.textContent =
+    "Menghubungkan ke customer...";
+
+  startChat();
+}
+
   </script>
 
 </body>
