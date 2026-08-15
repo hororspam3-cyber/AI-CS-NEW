@@ -20,9 +20,9 @@
   },
 
   "USER002": {
-  "id": "USER002",
-  "name": "Andi",
-  "company_id": "XYZ001",
+    "id": "USER002",
+    "name": "Andi",
+    "company_id": "XYZ001",
     "account_status": "Aktif",
     "balance": 1500000,
     "deposit": {
@@ -77,25 +77,45 @@
       "status": "Tersedia",
       "amount": 100000
     }
-  }, 
+  },
 
-"CUSTOMER001": {
-  "id": "CUSTOMER001",
-  "name": "Rina",
-  "company_id": "CLIENT001",
-  "account_status": "Aktif",
-  "balance": 4000000,
-  "deposit": {
-    "status": "Berhasil",
-    "amount": 2000000
+  "CUSTOMER001": {
+    "id": "CUSTOMER001",
+    "name": "Rina",
+    "company_id": "CLIENT001",
+    "account_status": "Aktif",
+    "balance": 4000000,
+    "deposit": {
+      "status": "Berhasil",
+      "amount": 2000000
+    },
+    "withdrawal": {
+      "status": "Tidak ada permintaan aktif",
+      "amount": 0
+    },
+    "bonus": {
+      "status": "Tersedia",
+      "amount": 300000
+    }
   },
-  "withdrawal": {
-    "status": "Tidak ada permintaan aktif",
-    "amount": 0
-  },
-  "bonus": {
-    "status": "Tersedia",
-    "amount": 300000
+
+  "TESTCUSTOMER001": {
+    "id": "TESTCUSTOMER001",
+    "name": "Budi",
+    "company_id": "TEST001",
+    "account_status": "Aktif",
+    "balance": 3000000,
+    "deposit": {
+      "status": "Berhasil",
+      "amount": 1500000
+    },
+    "withdrawal": {
+      "status": "Tidak ada permintaan aktif",
+      "amount": 0
+    },
+    "bonus": {
+      "status": "Tersedia",
+      "amount": 200000
+    }
   }
-}
-}
+  }
