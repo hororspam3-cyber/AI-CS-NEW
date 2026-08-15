@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>AI-CS New - Dashboard Company</title>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -44,6 +51,11 @@
       text-decoration: none;
     }
 
+    .menu:hover {
+      background: #1f2937;
+      color: white;
+    }
+
     .menu.active {
       background: #374151;
       color: white;
@@ -68,6 +80,7 @@
     }
 
     .top p {
+      margin-bottom: 0;
       color: #6b7280;
     }
 
@@ -79,6 +92,10 @@
       color: white;
       cursor: pointer;
       font-size: 14px;
+    }
+
+    .company-button:hover {
+      background: #374151;
     }
 
     .cards {
@@ -111,100 +128,11 @@
       padding: 25px;
       border-radius: 12px;
       box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-      margin-bottom: 25px;
     }
 
     .section h2 {
       margin-top: 0;
       font-size: 18px;
-    }
-
-    .form {
-      display: none;
-    }
-
-    .form.show {
-      display: block;
-    }
-
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      outline: none;
-      font-size: 14px;
-    }
-
-    .form-group input:focus {
-      border-color: #111827;
-    }
-
-    .form-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .btn {
-      padding: 11px 16px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .btn-test {
-      background: #2563eb;
-      color: white;
-    }
-
-    .btn-save {
-      background: #16a34a;
-      color: white;
-    }
-
-    .btn-cancel {
-      background: #e5e7eb;
-      color: #111827;
-    }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .result {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 8px;
-      display: none;
-      font-size: 14px;
-    }
-
-    .result.show {
-      display: block;
-    }
-
-    .result.success {
-      background: #dcfce7;
-      color: #166534;
-    }
-
-    .result.error {
-      background: #fee2e2;
-      color: #991b1b;
     }
 
     table {
@@ -233,13 +161,18 @@
       font-size: 12px;
     }
 
-    .widget-status {
-      display: inline-block;
-      padding: 5px 9px;
-      border-radius: 20px;
-      background: #dbeafe;
-      color: #1d4ed8;
+    .widget-button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 7px;
+      background: #111827;
+      color: white;
+      cursor: pointer;
       font-size: 12px;
+    }
+
+    .widget-button:hover {
+      background: #374151;
     }
 
     .empty {
@@ -249,6 +182,7 @@
     }
 
     @media (max-width: 800px) {
+
       .sidebar {
         position: static;
         width: 100%;
@@ -257,7 +191,6 @@
 
       .main {
         margin-left: 0;
-        padding: 20px;
       }
 
       .cards {
@@ -274,13 +207,20 @@
       }
 
       table {
-        min-width: 650px;
+        min-width: 750px;
       }
+
     }
+
   </style>
+
 </head>
 
+
 <body>
+
+
+  <!-- SIDEBAR -->
 
   <aside class="sidebar">
 
@@ -288,152 +228,67 @@
       🤖 AI-CS New
     </div>
 
-    <a href="#" class="menu active">
+    <a
+      href="dashboard.html"
+      class="menu active"
+    >
       Dashboard
     </a>
 
-    <a href="#" class="menu">
+    <a
+      href="dashboard.html"
+      class="menu"
+    >
       Companies
     </a>
 
-    <a href="#" class="menu">
+    <a
+      href="widget-generator.html"
+      class="menu"
+    >
       Widget
     </a>
 
-    <a href="#" class="menu">
+    <a
+      href="#"
+      class="menu"
+      onclick="alert('API akan kita buat pada tahap berikutnya.'); return false;"
+    >
       API
     </a>
 
   </aside>
 
+
+  <!-- MAIN -->
+
   <main class="main">
+
 
     <div class="top">
 
       <div>
+
         <h1>
           Dashboard Company
         </h1>
 
         <p>
-          Kelola perusahaan yang menggunakan AI Customer Service.
+          Kelola perusahaan yang menggunakan AI-CS New.
         </p>
+
       </div>
 
       <button
         class="company-button"
         type="button"
-        onclick="showAddCompany()"
+        onclick="addCompany()"
       >
         + Tambah Company
       </button>
 
     </div>
 
-    <!-- FORM TAMBAH COMPANY -->
-
-    <div
-      class="section form"
-      id="companyForm"
-    >
-
-      <h2>
-        Tambah Company
-      </h2>
-
-      <div class="form-group">
-
-        <label for="companyId">
-          Company ID
-        </label>
-
-        <input
-          id="companyId"
-          type="text"
-          placeholder="Contoh: ABC001"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label for="companyName">
-          Nama Perusahaan
-        </label>
-
-        <input
-          id="companyName"
-          type="text"
-          placeholder="Contoh: ABC Company"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label for="apiUrl">
-          API URL Customer
-        </label>
-
-        <input
-          id="apiUrl"
-          type="text"
-          placeholder="Contoh: https://api.perusahaan.com/customer"
-        >
-
-      </div>
-
-      <div class="form-group">
-
-        <label for="apiKeyEnv">
-          API Key Environment
-        </label>
-
-        <input
-          id="apiKeyEnv"
-          type="text"
-          placeholder="Contoh: ABC001_API_KEY"
-        >
-
-      </div>
-
-      <div class="form-actions">
-
-        <button
-          class="btn btn-test"
-          id="testButton"
-          type="button"
-          onclick="testConnection()"
-        >
-          Test Connection
-        </button>
-
-        <button
-          class="btn btn-save"
-          id="saveButton"
-          type="button"
-          onclick="saveCompany()"
-          disabled
-        >
-          Simpan Company
-        </button>
-
-        <button
-          class="btn btn-cancel"
-          type="button"
-          onclick="hideAddCompany()"
-        >
-          Batal
-        </button>
-
-      </div>
-
-      <div
-        class="result"
-        id="formResult"
-      ></div>
-
-    </div>
 
     <!-- STATISTICS -->
 
@@ -454,6 +309,7 @@
 
       </div>
 
+
       <div class="card">
 
         <div class="card-title">
@@ -468,6 +324,7 @@
         </div>
 
       </div>
+
 
       <div class="card">
 
@@ -485,6 +342,7 @@
       </div>
 
     </div>
+
 
     <!-- COMPANY TABLE -->
 
@@ -520,19 +378,25 @@
               Widget
             </th>
 
+            <th>
+              Aksi
+            </th>
+
           </tr>
 
         </thead>
 
-        <tbody id="companyTable">
+        <tbody
+          id="companyTable"
+        >
 
           <tr>
 
             <td
-              colspan="5"
+              colspan="6"
               class="empty"
             >
-              Belum ada data company.
+              Memuat data company...
             </td>
 
           </tr>
@@ -543,608 +407,288 @@
 
     </div>
 
+
   </main>
+
 
   <script>
 
     /*
     ========================================
-    DATA COMPANY
+    TAMBAH COMPANY
     ========================================
     */
 
-    const companies = [
+    function addCompany() {
 
-      {
-        id:
-          "CLIENT001",
-
-        name:
-          "Client Demo",
-
-        apiUrl:
-          "/api/client-demo/customer",
-
-        status:
-          "Aktif",
-
-        widget:
-          "Aktif"
-      }
-
-    ];
-
-
-    /*
-    ========================================
-    BUKA FORM
-    ========================================
-    */
-
-    function showAddCompany() {
-
-      document
-        .getElementById("companyForm")
-        .classList.add("show");
-
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      window.location.href =
+        "admin.html";
 
     }
 
 
     /*
     ========================================
-    TUTUP FORM
+    BUKA WIDGET
     ========================================
     */
 
-    function hideAddCompany() {
+    function openWidget(companyId) {
 
-      document
-        .getElementById("companyForm")
-        .classList.remove("show");
-
-      clearForm();
+      window.location.href =
+        "widget-generator.html?companyId=" +
+        encodeURIComponent(companyId);
 
     }
 
 
     /*
     ========================================
-    CLEAR FORM
+    LOAD COMPANY
     ========================================
     */
 
-    function clearForm() {
-
-      document.getElementById(
-        "companyId"
-      ).value = "";
-
-      document.getElementById(
-        "companyName"
-      ).value = "";
-
-      document.getElementById(
-        "apiUrl"
-      ).value = "";
-
-      document.getElementById(
-        "apiKeyEnv"
-      ).value = "";
-
-      document.getElementById(
-        "saveButton"
-      ).disabled = true;
-
-      hideResult();
-
-    }
-
-
-    /*
-    ========================================
-    HASIL TEST
-    ========================================
-    */
-
-    function showResult(
-      message,
-      success
-    ) {
-
-      const result =
-        document.getElementById(
-          "formResult"
-        );
-
-      result.textContent =
-        message;
-
-      result.className =
-        "result show " +
-        (
-          success
-            ? "success"
-            : "error"
-        );
-
-    }
-
-
-    function hideResult() {
-
-      const result =
-        document.getElementById(
-          "formResult"
-        );
-
-      result.className =
-        "result";
-
-      result.textContent =
-        "";
-
-    }
-
-
-    /*
-    ========================================
-    TEST CONNECTION
-    ========================================
-    */
-
-    async function testConnection() {
-
-      const companyId =
-        document.getElementById(
-          "companyId"
-        ).value
-          .trim()
-          .toUpperCase();
-
-      const companyName =
-        document.getElementById(
-          "companyName"
-        ).value
-          .trim();
-
-      const apiUrl =
-        document.getElementById(
-          "apiUrl"
-        ).value
-          .trim();
-
-      const apiKeyEnv =
-        document.getElementById(
-          "apiKeyEnv"
-        ).value
-          .trim()
-          .toUpperCase();
-
-
-      if (
-        !companyId ||
-        !companyName ||
-        !apiUrl ||
-        !apiKeyEnv
-      ) {
-
-        showResult(
-          "Semua data harus diisi terlebih dahulu.",
-          false
-        );
-
-        return;
-      }
-
-
-      const button =
-        document.getElementById(
-          "testButton"
-        );
-
-      button.disabled =
-        true;
-
-      button.textContent =
-        "Testing...";
-
-
-      hideResult();
-
-
-      try {
-
-        /*
-        ----------------------------------------
-        TEST COMPANY YANG SUDAH ADA
-        ----------------------------------------
-        */
-
-        const response =
-          await fetch(
-            "/api/company/" +
-            encodeURIComponent(
-              companyId
-            )
-          );
-
-
-        const data =
-          await response.json();
-
-
-        /*
-        ----------------------------------------
-        JIKA COMPANY SUDAH ADA
-        ----------------------------------------
-        */
-
-        if (
-          response.ok &&
-          data.success
-        ) {
-
-          showResult(
-            "Company ditemukan. API URL dan konfigurasi company terbaca.",
-            true
-          );
-
-          document.getElementById(
-            "saveButton"
-          ).disabled = false;
-
-          return;
-        }
-
-
-        /*
-        ----------------------------------------
-        COMPANY BELUM ADA
-        ----------------------------------------
-        */
-
-        showResult(
-          "Data valid. Company ID belum terdaftar dan siap disimpan.",
-          true
-        );
-
-        document.getElementById(
-          "saveButton"
-        ).disabled = false;
-
-      } catch (error) {
-
-        showResult(
-          "Tidak dapat terhubung ke server AI-CS New.",
-          false
-        );
-
-      } finally {
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "Test Connection";
-
-      }
-
-    }
-
-
-    /*
-    ========================================
-    SIMPAN COMPANY
-    ========================================
-    */
-
-    async function saveCompany() {
-
-      const companyId =
-        document.getElementById(
-          "companyId"
-        ).value
-          .trim()
-          .toUpperCase();
-
-      const companyName =
-        document.getElementById(
-          "companyName"
-        ).value
-          .trim();
-
-      const apiUrl =
-        document.getElementById(
-          "apiUrl"
-        ).value
-          .trim();
-
-      const apiKeyEnv =
-        document.getElementById(
-          "apiKeyEnv"
-        ).value
-          .trim()
-          .toUpperCase();
-
-
-      if (
-        !companyId ||
-        !companyName ||
-        !apiUrl ||
-        !apiKeyEnv
-      ) {
-
-        showResult(
-          "Data company belum lengkap.",
-          false
-        );
-
-        return;
-      }
-
-
-      const saveButton =
-        document.getElementById(
-          "saveButton"
-        );
-
-      saveButton.disabled =
-        true;
-
-      saveButton.textContent =
-        "Menyimpan...";
-
-
-      try {
-
-        const response =
-          await fetch(
-            "/api/admin/company",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify({
-
-                  companyId:
-                    companyId,
-
-                  companyName:
-                    companyName,
-
-                  apiUrl:
-                    apiUrl,
-
-                  apiKeyEnv:
-                    apiKeyEnv
-
-                })
-            }
-          );
-
-
-        const data =
-          await response.json();
-
-
-        if (
-          !response.ok ||
-          !data.success
-        ) {
-
-          showResult(
-            data.message ||
-            "Company gagal disimpan.",
-            false
-          );
-
-          return;
-        }
-
-
-        /*
-        ----------------------------------------
-        TAMBAHKAN KE TABEL
-        ----------------------------------------
-        */
-
-        companies.push({
-
-          id:
-            companyId,
-
-          name:
-            companyName,
-
-          apiUrl:
-            apiUrl,
-
-          status:
-            "Aktif",
-
-          widget:
-            "Belum"
-
-        });
-
-
-        renderCompanies();
-
-
-        showResult(
-          "Company berhasil didaftarkan.",
-          true
-        );
-
-
-        document.getElementById(
-          "companyId"
-        ).value = "";
-
-        document.getElementById(
-          "companyName"
-        ).value = "";
-
-        document.getElementById(
-          "apiUrl"
-        ).value = "";
-
-        document.getElementById(
-          "apiKeyEnv"
-        ).value = "";
-
-        saveButton.disabled =
-          true;
-
-      } catch (error) {
-
-        showResult(
-          "Tidak dapat terhubung ke server.",
-          false
-        );
-
-      } finally {
-
-        saveButton.textContent =
-          "Simpan Company";
-
-      }
-
-    }
-
-
-    /*
-    ========================================
-    RENDER COMPANY
-    ========================================
-    */
-
-    function renderCompanies() {
+    async function loadCompanies() {
 
       const table =
         document.getElementById(
           "companyTable"
         );
 
-      const total =
-        document.getElementById(
-          "totalCompany"
-        );
+      try {
 
-      const active =
-        document.getElementById(
-          "activeCompany"
-        );
+        const response =
+          await fetch(
+            "/api/companies"
+          );
 
-      const widget =
-        document.getElementById(
-          "activeWidget"
-        );
+        const data =
+          await response.json();
 
+        if (
+          !response.ok ||
+          !data.success
+        ) {
 
-      total.textContent =
-        companies.length;
-
-
-      active.textContent =
-        companies.filter(
-          function(company) {
-
-            return (
-              company.status ===
-              "Aktif"
-            );
-
-          }
-        ).length;
-
-
-      widget.textContent =
-        companies.filter(
-          function(company) {
-
-            return (
-              company.widget ===
-              "Aktif"
-            );
-
-          }
-        ).length;
-
-
-      table.innerHTML = "";
-
-
-      companies.forEach(
-        function(company) {
-
-          const row =
-            document.createElement(
-              "tr"
-            );
-
-
-          row.innerHTML = `
-
-            <td>
-              ${company.id}
-            </td>
-
-            <td>
-              ${company.name}
-            </td>
-
-            <td>
-              ${company.apiUrl}
-            </td>
-
-            <td>
-
-              <span class="status">
-                ${company.status}
-              </span>
-
-            </td>
-
-            <td>
-
-              ${
-                company.widget === "Aktif"
-
-                ? `
-                  <span class="widget-status">
-                    Aktif
-                  </span>
-                `
-
-                : `
-                  <span class="status">
-                    Belum
-                  </span>
-                `
-              }
-
-            </td>
-
-          `;
-
-
-          table.appendChild(
-            row
+          throw new Error(
+            data.message ||
+            "Gagal mengambil data company."
           );
 
         }
-      );
+
+
+        const companies =
+          data.companies || [];
+
+
+        document.getElementById(
+          "totalCompany"
+        ).textContent =
+          companies.length;
+
+
+        document.getElementById(
+          "activeCompany"
+        ).textContent =
+          companies.filter(
+            function(company) {
+
+              return (
+                company.api_enabled === true
+              );
+
+            }
+          ).length;
+
+
+        document.getElementById(
+          "activeWidget"
+        ).textContent =
+          companies.filter(
+            function(company) {
+
+              return (
+                company.widget === true ||
+                company.widget === "Aktif"
+              );
+
+            }
+          ).length;
+
+
+        table.innerHTML = "";
+
+
+        if (companies.length === 0) {
+
+          table.innerHTML = `
+            <tr>
+              <td
+                colspan="6"
+                class="empty"
+              >
+                Belum ada data company.
+              </td>
+            </tr>
+          `;
+
+          return;
+        }
+
+
+        companies.forEach(
+          function(company) {
+
+            const row =
+              document.createElement(
+                "tr"
+              );
+
+
+            const widgetActive =
+              company.widget === true ||
+              company.widget === "Aktif";
+
+
+            row.innerHTML = `
+
+              <td>
+                ${escapeHtml(
+                  company.id || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  company.name || "-"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  company.api_url || "-"
+                )}
+              </td>
+
+              <td>
+                <span class="status">
+                  ${
+                    company.api_enabled === true
+                      ? "Aktif"
+                      : "Nonaktif"
+                  }
+                </span>
+              </td>
+
+              <td>
+                <span class="status">
+                  ${
+                    widgetActive
+                      ? "Aktif"
+                      : "Belum"
+                  }
+                </span>
+              </td>
+
+              <td>
+
+                <button
+                  class="widget-button"
+                  onclick="openWidget('${escapeAttribute(company.id || "")}')"
+                >
+                  Widget
+                </button>
+
+              </td>
+
+            `;
+
+
+            table.appendChild(
+              row
+            );
+
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "LOAD COMPANIES ERROR:",
+          error
+        );
+
+
+        table.innerHTML = `
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="empty"
+            >
+              Gagal mengambil data company.
+              <br><br>
+              ${escapeHtml(
+                error.message
+              )}
+            </td>
+
+          </tr>
+
+        `;
+
+      }
+
+    }
+
+
+    /*
+    ========================================
+    HTML SECURITY
+    ========================================
+    */
+
+    function escapeHtml(value) {
+
+      return String(value)
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+
+    function escapeAttribute(value) {
+
+      return String(value)
+        .replace(
+          /\\/g,
+          "\\\\"
+        )
+        .replace(
+          /'/g,
+          "\\'"
+        );
 
     }
 
@@ -1155,9 +699,11 @@
     ========================================
     */
 
-    renderCompanies();
+    loadCompanies();
 
   </script>
 
+
 </body>
+
 </html>
