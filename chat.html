@@ -1,12 +1,14 @@
 <!DOCTYPE html>
+
 <html lang="id">
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+>
 
   <title>AI Customer Service</title>
 
@@ -45,31 +47,6 @@
       margin: 6px 0 0;
       font-size: 13px;
       color: #d1d5db;
-    }
-
-    .customer-select {
-      margin-top: 10px;
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-    }
-
-    .start-button {
-      margin-top: 10px;
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      background: white;
-      color: #111827;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .start-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
     }
 
     .messages {
@@ -132,147 +109,127 @@
       text-align: center;
     }
   </style>
+
 </head>
 
 <body>
 
   <div class="chat-container">
 
-    <div class="header">
+```
+<div class="header">
 
-      <h2>AI Customer Service</h2>
+  <h2>
+    AI Customer Service
+  </h2>
 
-      <select
-        id="customerSelect"
-        class="customer-select"
-      >
-        <option value="USER001">
-          Dina - DEMO001
-        </option>
+  <p id="customerInfo">
+    Menghubungkan...
+  </p>
 
-        <option value="USER002">
-          Andi - XYZ001
-        </option>
+</div>
 
-        <option value="USER003">
-          Budi - DEMO001
-        </option>
 
-        <option value="USER004">
-          Citra - DEMO001
-        </option>
+<div
+  class="messages"
+  id="messages"
+>
 
-        <option value="CUSTOMER001">
-          Rina - CLIENT001
-        </option>
-        </select>
+  <div class="message ai">
+    Menghubungkan ke AI Customer Service...
+  </div>
 
-      <button
-        id="startButton"
-        class="start-button"
-        onclick="startChat()"
-      >
-        Mulai Chat
-      </button>
+</div>
 
-      <p id="customerInfo">
-        Silakan pilih customer lalu tekan Mulai Chat.
-      </p>
 
-    </div>
+<div class="input-area">
 
-    <div
-      class="messages"
-      id="messages"
-    >
-      <div class="message ai">
-        Silakan pilih customer untuk memulai chat.
-      </div>
-    </div>
+  <input
+    id="messageInput"
+    type="text"
+    placeholder="Tulis pesan..."
+    autocomplete="off"
+    disabled
+  >
 
-    <div class="input-area">
+  <button
+    id="sendButton"
+    onclick="sendMessage()"
+    disabled
+  >
+    Kirim
+  </button>
 
-      <input
-        id="messageInput"
-        type="text"
-        placeholder="Tulis pesan..."
-        autocomplete="off"
-        disabled
-      >
-
-      <button
-        id="sendButton"
-        onclick="sendMessage()"
-        disabled
-      >
-        Kirim
-      </button>
-
-    </div>
+</div>
+```
 
   </div>
 
-
   <script>
-
-/*
-========================================
-AUTO CUSTOMER DARI URL
-========================================
-*/
-
-function getCustomerFromUrl() {
-
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-  const companyId =
-    String(
-      params.get("companyId") || ""
-    )
-      .trim()
-      .toUpperCase();
-
-  const customerId =
-    String(
-      params.get("customerId") || ""
-    )
-      .trim()
-      .toUpperCase();
-
-  if (
-    !companyId ||
-    !customerId
-  ) {
-    return null;
-  }
-
-  return {
-    companyId:
-      companyId,
-
-    customerId:
-      customerId
-  };
-}
 
     /*
     ========================================
-    LOGIN CUSTOMER
+    AMBIL CUSTOMER DARI URL
     ========================================
     */
 
-    async function loginDemo() {
+    function getCustomerFromUrl() {
 
-      const customerSelect =
-        document.getElementById(
-          "customerSelect"
+      const params =
+        new URLSearchParams(
+          window.location.search
         );
 
+      const companyId =
+        String(
+          params.get("companyId") || ""
+        )
+          .trim()
+          .toUpperCase();
+
       const customerId =
-        customerSelect.value;
+        String(
+          params.get("customerId") || ""
+        )
+          .trim()
+          .toUpperCase();
+
+      if (
+        !companyId ||
+        !customerId
+      ) {
+        return null;
+      }
+
+      return {
+        companyId:
+          companyId,
+
+        customerId:
+          customerId
+      };
+    }
+
+
+    /*
+    ========================================
+    LOGIN CUSTOMER OTOMATIS
+    ========================================
+    */
+
+    async function loginCustomer() {
+
+      const urlCustomer =
+        getCustomerFromUrl();
+
+      if (!urlCustomer) {
+
+        throw new Error(
+          "Company ID atau Customer ID tidak ditemukan di URL."
+        );
+
+      }
+
 
       const response =
         await fetch(
@@ -290,31 +247,45 @@ function getCustomerFromUrl() {
             body:
               JSON.stringify({
                 customerId:
-                  customerId
+                  urlCustomer.customerId
               })
           }
         );
 
+
       const data =
         await response.json();
+
 
       if (
         !response.ok ||
         !data.success
       ) {
+
         throw new Error(
           data.message ||
-          "Login gagal."
+          "Login customer gagal."
         );
+
       }
 
-      return data.customer;
+
+      return {
+        customer:
+          data.customer,
+
+        companyId:
+          urlCustomer.companyId,
+
+        customerId:
+          urlCustomer.customerId
+      };
     }
 
 
     /*
     ========================================
-    MULAI CHAT
+    MULAI OTOMATIS
     ========================================
     */
 
@@ -330,70 +301,34 @@ function getCustomerFromUrl() {
           "customerInfo"
         );
 
-      const startButton =
+      const input =
         document.getElementById(
-          "startButton"
+          "messageInput"
         );
+
+      const sendButton =
+        document.getElementById(
+          "sendButton"
+        );
+
 
       try {
 
-        startButton.disabled = true;
+        const result =
+          await loginCustomer();
 
-        const urlCustomer =
-  getCustomerFromUrl();
 
-let customer;
+        const customer =
+          result.customer;
 
-if (urlCustomer) {
 
-  const response =
-    await fetch(
-      "/api/login",
-      {
-        method: "POST",
-
-        credentials: "include",
-
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-
-        body:
-          JSON.stringify({
-            customerId:
-              urlCustomer.customerId
-          })
-      }
-    );
-
-  const data =
-    await response.json();
-
-  if (
-    !response.ok ||
-    !data.success
-  ) {
-    throw new Error(
-      data.message ||
-      "Login customer gagal."
-    );
-  }
-
-  customer =
-    data.customer;
-
-} else {
-
-  customer =
-    await loginDemo();
-
-}
         customerInfo.textContent =
           "● Online · " +
           customer.name;
 
+
         messages.innerHTML = "";
+
 
         const welcome =
           document.createElement(
@@ -403,55 +338,59 @@ if (urlCustomer) {
         welcome.className =
           "message ai";
 
+
         welcome.textContent =
           "Halo " +
           customer.name +
           ", ada yang bisa saya bantu?";
 
+
         messages.appendChild(
           welcome
         );
 
-        document.getElementById(
-          "messageInput"
-        ).disabled = false;
 
-        document.getElementById(
-          "sendButton"
-        ).disabled = false;
+        input.disabled = false;
 
-        document.getElementById(
-          "messageInput"
-        ).focus();
+        sendButton.disabled = false;
+
+        input.focus();
+
 
       } catch (error) {
-
-        startButton.disabled = false;
 
         customerInfo.textContent =
           "● Offline";
 
+
         messages.innerHTML = "";
+
 
         const errorMessage =
           document.createElement(
             "div"
           );
 
+
         errorMessage.className =
           "error";
 
+
         errorMessage.textContent =
+          error.message ||
           "Tidak dapat terhubung ke sistem.";
+
 
         messages.appendChild(
           errorMessage
         );
 
+
         console.error(
-          "LOGIN ERROR:",
+          "AUTO LOGIN ERROR:",
           error
         );
+
       }
     }
 
@@ -479,49 +418,62 @@ if (urlCustomer) {
           "messages"
         );
 
+
       const message =
         input.value.trim();
+
 
       if (!message) {
         return;
       }
+
 
       const userMessage =
         document.createElement(
           "div"
         );
 
+
       userMessage.className =
         "message user";
 
+
       userMessage.textContent =
         message;
+
 
       messages.appendChild(
         userMessage
       );
 
+
       input.value = "";
 
       button.disabled = true;
+
 
       const loading =
         document.createElement(
           "div"
         );
 
+
       loading.className =
         "message ai";
 
+
       loading.textContent =
         "Sedang mengetik...";
+
 
       messages.appendChild(
         loading
       );
 
+
       messages.scrollTop =
         messages.scrollHeight;
+
 
       try {
 
@@ -546,35 +498,44 @@ if (urlCustomer) {
             }
           );
 
+
         const data =
           await response.json();
 
+
         loading.remove();
+
 
         const aiMessage =
           document.createElement(
             "div"
           );
 
+
         aiMessage.className =
           "message ai";
+
 
         aiMessage.textContent =
           data.reply ||
           data.message ||
           "AI tidak memberikan jawaban.";
 
+
         messages.appendChild(
           aiMessage
         );
 
+
         messages.scrollTop =
           messages.scrollHeight;
+
 
       } catch (error) {
 
         loading.textContent =
           "Tidak dapat terhubung ke AI.";
+
 
         console.error(
           "CHAT ERROR:",
@@ -603,54 +564,27 @@ if (urlCustomer) {
       )
       .addEventListener(
         "keydown",
-        function (event) {
+        function(event) {
 
           if (
             event.key === "Enter"
           ) {
+
             sendMessage();
+
           }
 
         }
       );
 
+
     /*
-========================================
-AUTO START DARI URL
-========================================
-*/
+    ========================================
+    AUTO START
+    ========================================
+    */
 
-const urlCustomer =
-  getCustomerFromUrl();
-
-if (urlCustomer) {
-
-  const customerSelect =
-    document.getElementById(
-      "customerSelect"
-    );
-
-  const startButton =
-    document.getElementById(
-      "startButton"
-    );
-
-  const customerInfo =
-    document.getElementById(
-      "customerInfo"
-    );
-
-  customerSelect.style.display =
-    "none";
-
-  startButton.style.display =
-    "none";
-
-  customerInfo.textContent =
-    "Menghubungkan ke customer...";
-
-  startChat();
-}
+    startChat();
 
   </script>
 
