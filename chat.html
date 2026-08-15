@@ -215,6 +215,49 @@
 
   <script>
 
+/*
+========================================
+AUTO CUSTOMER DARI URL
+========================================
+*/
+
+function getCustomerFromUrl() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const companyId =
+    String(
+      params.get("companyId") || ""
+    )
+      .trim()
+      .toUpperCase();
+
+  const customerId =
+    String(
+      params.get("customerId") || ""
+    )
+      .trim()
+      .toUpperCase();
+
+  if (
+    !companyId ||
+    !customerId
+  ) {
+    return null;
+  }
+
+  return {
+    companyId:
+      companyId,
+
+    customerId:
+      customerId
+  };
+}
+
     /*
     ========================================
     LOGIN CUSTOMER
