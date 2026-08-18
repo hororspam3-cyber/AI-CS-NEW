@@ -1781,7 +1781,7 @@ ADMIN TEST CUSTOMER API
 
 app.get(
   "/api/admin/test-customer/:companyId/:customerId",
-  function (req, res) {
+  async function (req, res) {
     try {
 
       const companyId =
@@ -1797,6 +1797,12 @@ app.get(
         )
           .trim()
           .toUpperCase();
+
+      /*
+      ========================================
+      VALIDASI
+      ========================================
+      */
 
       if (!companyId) {
         return res.status(400).json({
@@ -1814,6 +1820,12 @@ app.get(
         });
       }
 
+      /*
+      ========================================
+      LOAD COMPANY
+      ========================================
+      */
+
       const companies =
         loadCompanies();
 
@@ -1828,6 +1840,12 @@ app.get(
         });
       }
 
+      /*
+      ========================================
+      API KEY COMPANY
+      ========================================
+      */
+
       const apiKey =
         process.env[
           company.api_key_env
@@ -1841,66 +1859,155 @@ app.get(
         });
       }
 
-      const customers =
-        loadCustomers();
+      /*
+      ========================================
+      API URL COMPANY
+      ========================================
+      */
 
-      const customer =
-        customers[customerId];
+      let apiUrl =
+        String(
+          company.api_url || ""
+        ).trim();
 
-      if (!customer) {
+      if (!apiUrl) {
+        return res.status(500).json({
+          success: false,
+          message:
+            "API URL company belum tersedia."
+        });
+      }
+
+      /*
+      ========================================
+      TAMBAHKAN CUSTOMER ID
+      ========================================
+      */
+
+      apiUrl =
+        apiUrl.replace(/\/+$/, "") +
+        "/" +
+        encodeURIComponent(
+          customerId
+        );
+
+      console.log(
+        "ADMIN TEST COMPANY API:",
+        apiUrl
+      );
+
+      /*
+      ========================================
+      PANGGIL API PERUSAHAAN
+      ========================================
+      */
+
+      const companyResponse =
+        await fetch(
+          apiUrl,
+          {
+            method: "GET",
+
+            headers: {
+              "x-company-id":
+                companyId,
+
+              "x-api-key":
+                apiKey
+            }
+          }
+        );
+
+      /*
+      ========================================
+      BACA RESPONSE
+      ========================================
+      */
+
+      let companyData;
+
+      try {
+
+        companyData =
+          await companyResponse.json();
+
+      } catch (error) {
+
+        return res.status(502).json({
+          success: false,
+          message:
+            "API company memberikan response tidak valid."
+        });
+
+      }
+
+      /*
+      ========================================
+      CEK RESPONSE COMPANY
+      ========================================
+      */
+
+      if (
+        !companyResponse.ok
+      ) {
+
+        console.error(
+          "COMPANY API ERROR:",
+          companyData
+        );
+
+        return res.status(
+          companyResponse.status
+        ).json({
+          success: false,
+          message:
+            "API customer company gagal.",
+          companyResponse:
+            companyData
+        });
+
+      }
+
+      /*
+      ========================================
+      CEK DATA CUSTOMER
+      ========================================
+      */
+
+      if (
+        !companyData.success ||
+        !companyData.customer
+      ) {
+
         return res.status(404).json({
           success: false,
           message:
-            "Customer tidak ditemukan."
+            "Customer tidak ditemukan di company.",
+          companyResponse:
+            companyData
         });
+
       }
 
-      if (
-        String(
-          customer.company_id || ""
-        )
-          .trim()
-          .toUpperCase() !==
-        companyId
-      ) {
-        return res.status(403).json({
-          success: false,
-          message:
-            "Customer bukan milik company ini."
-        });
-      }
+      /*
+      ========================================
+      BERHASIL
+      ========================================
+      */
 
       return res.json({
+
         success: true,
 
         companyId:
           companyId,
 
-        customer: {
-          id:
-            customer.id,
+        customerId:
+          customerId,
 
-          name:
-            customer.name,
+        customer:
+          companyData.customer
 
-          company_id:
-            customer.company_id,
-
-          account_status:
-            customer.account_status,
-
-          balance:
-            customer.balance,
-
-          deposit:
-            customer.deposit,
-
-          withdrawal:
-            customer.withdrawal,
-
-          bonus:
-            customer.bonus
-        }
       });
 
     } catch (error) {
@@ -1913,8 +2020,11 @@ app.get(
       return res.status(500).json({
         success: false,
         message:
-          "Gagal melakukan test customer API."
+          "Gagal melakukan test customer API.",
+        error:
+          error.message
       });
+
     }
   }
 );
