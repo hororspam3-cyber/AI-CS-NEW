@@ -32,10 +32,10 @@
   },
 
   "NEXA001": {
-    "id": "NEXA001",
-    "name": "NexaPay",
-    "api_url": "https://nexapay-demo.onrender.com/api/company/customer",
-    "api_key_env": "NEXA001_API_KEY",
-    "api_enabled": true
-  }
+  "id": "NEXA001",
+  "name": "NexaPay",
+  "api_url": "https://nexapay-demo.onrender.com/api/demo-company/customer",
+  "api_key_env": "NEXA001_API_KEY",
+  "api_enabled": true
+}
 }
