@@ -1078,9 +1078,9 @@ Jawaban harus terlihat seperti customer service manusia, bukan seperti output AI
             },
 
             body:
-              JSON.stringify({
-                model:
-                  "llama-3.3-70b-versatile",
+  JSON.stringify({
+    model:
+      "openai/gpt-oss-20b",
 
                 messages: [
                   {
@@ -1262,10 +1262,10 @@ app.get(
             },
 
             body:
-              JSON.stringify({
-                model:
-                  "llama-3.3-70b-versatile",
-
+  JSON.stringify({
+    model:
+      "openai/gpt-oss-20b",
+    
                 messages: [
                   {
                     role:
@@ -1396,10 +1396,11 @@ Jangan meminta password, PIN, OTP, atau kode keamanan.
               GROQ_API_KEY
           },
 
-          body: JSON.stringify({
-            model:
-              "llama-3.3-70b-versatile",
-
+          body:
+  JSON.stringify({
+    model:
+      "openai/gpt-oss-20b",
+    
             messages: [
               {
                 role: "system",
